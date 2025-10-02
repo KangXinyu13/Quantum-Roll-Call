@@ -1,0 +1,2473 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>量子点名系统</title>
+    <link rel="icon" href="assets/icon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Noto Sans SC', 'Source Han Sans CN', 'Microsoft YaHei', sans-serif;
+        }
+        
+        /* 导入思源黑体字体 */
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap');
+        
+        :root {
+            --primary: #6c8fff;
+            --secondary: #8d6dff;
+            --accent: #ff8585;
+            --light: #2a2a2a;
+            --dark: #f8f9fa;
+            --bg: #1a1a1a;
+            --text: #f8f9fa;
+            --card-bg: rgba(45, 45, 45, 0.3);
+            --border: #444444;
+            --shadow: rgba(0, 0, 0, 0.3);
+            --status-bg: rgba(42, 59, 90, 0.3);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+            --radius-2xl: 24px;
+            --custom-bg: none;
+            --material-effect: blur(20px);
+            --custom-font: 'Noto Sans SC', 'Source Han Sans CN', 'Microsoft YaHei', sans-serif;
+            --select-bg: rgba(255, 255, 255, 0.1);
+            --select-border: var(--border);
+            --select-text: var(--text);
+        }
+        
+        [data-theme="light"] {
+            --primary: #4a6bff;
+            --secondary: #6c42f5;
+            --accent: #ff6b6b;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --bg: #ffffff;
+            --text: #212529;
+            --card-bg: rgba(255, 255, 255, 0.3);
+            --border: #eeeeee;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --status-bg: rgba(232, 244, 255, 0.3);
+            --select-bg: rgba(255, 255, 255, 0.9);
+            --select-border: #cccccc;
+            --select-text: #212529;
+        }
+
+        /* 材质效果 */
+        .material-none .container,
+        .material-none .status,
+        .material-none .selected-name,
+        .material-none .name-list,
+        .material-none .name-tag,
+        .material-none .btn,
+        .material-none .icon-btn {
+            backdrop-filter: none !important;
+            background: var(--bg) !important;
+            border-color: var(--border) !important;
+            opacity: 1 !important;
+        }
+
+        .material-none .container {
+            background: var(--card-bg) !important;
+        }
+
+        .material-acrylic .container,
+        .material-acrylic .status,
+        .material-acrylic .selected-name,
+        .material-acrylic .name-list,
+        .material-acrylic .name-tag,
+        .material-acrylic .btn,
+        .material-acrylic .icon-btn {
+            backdrop-filter: blur(20px) saturate(180%) !important;
+            background: rgba(255, 255, 255, 0.1) !important;
+            border: 1px solid rgba(255, 255, 255, 0.15) !important;
+        }
+
+        .material-frosted-glass .container,
+        .material-frosted-glass .status,
+        .material-frosted-glass .selected-name,
+        .material-frosted-glass .name-list,
+        .material-frosted-glass .name-tag,
+        .material-frosted-glass .btn,
+        .material-frosted-glass .icon-btn {
+            backdrop-filter: blur(30px) saturate(200%) !important;
+            background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.15) 0%,
+                rgba(255, 255, 255, 0.1) 50%,
+                rgba(255, 255, 255, 0.05) 100%
+            ) !important;
+            border: 1px solid rgba(255, 255, 255, 0.3) !important;
+            box-shadow: 
+                0 15px 35px rgba(0, 0, 0, 0.2),
+                inset 0 2px 0 rgba(255, 255, 255, 0.2),
+                inset 0 -2px 0 rgba(0, 0, 0, 0.1) !important;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .material-frosted-glass .container::before,
+        .material-frosted-glass .status::before,
+        .material-frosted-glass .selected-name::before,
+        .material-frosted-glass .name-list::before,
+        .material-frosted-glass .name-tag::before,
+        .material-frosted-glass .btn::before,
+        .material-frosted-glass .icon-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.1) 0%,
+                rgba(255, 255, 255, 0.05) 50%,
+                transparent 100%
+            );
+            pointer-events: none;
+            border-radius: inherit;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--bg) 0%, var(--light) 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: var(--text);
+            transition: var(--transition);
+            font-family: var(--custom-font);
+        }
+        
+        body.custom-bg {
+            background: var(--custom-bg);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        
+        body.no-bg {
+            background: var(--bg);
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: var(--card-bg);
+            border-radius: var(--radius-2xl);
+            box-shadow: 0 15px 30px var(--shadow);
+            overflow: hidden;
+            padding: 30px;
+            position: relative;
+            transition: var(--transition);
+            backdrop-filter: var(--material-effect);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .top-controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 12px;
+            z-index: 10;
+        }
+        
+        .icon-btn {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: var(--radius-lg);
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+        
+        .icon-btn:hover {
+            transform: translateY(-2px) scale(1.05);
+            background: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 20px var(--shadow);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--primary);
+            font-size: 2.5rem;
+            transition: var(--transition);
+            font-weight: 600;
+        }
+        
+        .status {
+            text-align: center;
+            margin: 15px 0;
+            font-size: 0.9rem;
+            color: var(--text);
+            opacity: 0.8;
+            transition: var(--transition);
+            padding: 12px 20px;
+            background: var(--status-bg);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        .result-area {
+            text-align: center;
+            margin: 30px 0;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .selected-name {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 20px 0;
+            transition: var(--transition);
+            text-shadow: 2px 2px 10px var(--shadow);
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-xl);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 25px;
+        }
+        
+        .btn {
+            padding: 16px 32px;
+            color: white;
+            border: none;
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.1rem;
+            background: rgba(74, 107, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+            background: rgba(74, 107, 255, 0.3);
+        }
+        
+        .btn-start {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4caf50;
+        }
+        
+        .btn-start:hover {
+            background: rgba(76, 175, 80, 0.3);
+        }
+        
+        .btn-stop {
+            background: rgba(244, 67, 54, 0.2);
+            color: #f44336;
+        }
+        
+        .btn-stop:hover {
+            background: rgba(244, 67, 54, 0.3);
+        }
+        
+        .btn-reload {
+            background: rgba(255, 152, 0, 0.2);
+            color: #ff9800;
+        }
+        
+        .btn-reload:hover {
+            background: rgba(255, 152, 0, 0.3);
+        }
+        
+        .animation {
+            animation: pulse 0.5s infinite alternate;
+        }
+        
+        @keyframes pulse {
+            from {
+                transform: scale(1);
+                color: var(--primary);
+            }
+            to {
+                transform: scale(1.05);
+                color: var(--accent);
+            }
+        }
+        
+        /* 设置面板样式 */
+        .settings-panel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            backdrop-filter: blur(5px);
+        }
+        
+        .settings-panel.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .settings-content {
+            background: var(--card-bg);
+            border-radius: var(--radius-2xl);
+            padding: 0;
+            width: 95%;
+            max-width: 900px;
+            height: 85vh;
+            box-shadow: 0 25px 50px var(--shadow);
+            transform: translateY(-20px) scale(0.95);
+            transition: var(--transition);
+            display: flex;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+            position: relative;
+        }
+        
+        .settings-panel.active .settings-content {
+            transform: translateY(0) scale(1);
+        }
+        
+        /* 左侧导航 */
+        .settings-nav {
+            width: 240px;
+            background: rgba(255, 255, 255, 0.08);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px 0;
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 25px;
+            color: var(--text);
+            text-decoration: none;
+            transition: var(--transition);
+            cursor: pointer;
+            border-left: 3px solid transparent;
+            opacity: 0.8;
+        }
+        
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            opacity: 1;
+        }
+        
+        .nav-item.active {
+            background: rgba(255, 255, 255, 0.1);
+            border-left-color: var(--primary);
+            opacity: 1;
+            font-weight: 600;
+        }
+        
+        .nav-item i {
+            margin-right: 12px;
+            width: 20px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        
+        /* 右侧内容区域 */
+        .settings-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .settings-header {
+            padding: 25px 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .settings-header h2 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .settings-body {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .settings-group {
+            margin-bottom: 35px;
+        }
+        
+        .settings-group:last-child {
+            margin-bottom: 0;
+        }
+        
+        .group-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .option-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .option-row:last-child {
+            border-bottom: none;
+        }
+        
+        .option-info {
+            flex: 1;
+        }
+        
+        .option-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--text);
+        }
+        
+        .option-desc {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            line-height: 1.4;
+        }
+        
+        .option-control {
+            margin-left: 20px;
+        }
+        
+        /* 单选按钮组 */
+        .radio-group {
+            display: flex;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4px;
+            border-radius: var(--radius-lg);
+        }
+        
+        .radio-option {
+            padding: 8px 16px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            min-width: 80px;
+            opacity: 0.7;
+        }
+        
+        .radio-option:hover {
+            opacity: 0.9;
+        }
+        
+        .radio-option.active {
+            background: var(--primary);
+            color: white;
+            opacity: 1;
+            box-shadow: 0 2px 8px rgba(74, 107, 255, 0.3);
+        }
+        
+        /* 自定义语言选择器 */
+        .language-selector {
+            position: relative;
+            width: 200px;
+        }
+        
+        .language-selector .selected-language {
+            padding: 12px 16px;
+            border: 2px solid var(--select-border);
+            border-radius: var(--radius-lg);
+            background: var(--select-bg);
+            color: var(--select-text);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+        }
+        
+        .language-selector .selected-language:hover {
+            border-color: var(--primary);
+        }
+        
+        .language-selector .language-options {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--select-bg);
+            border: 2px solid var(--select-border);
+            border-radius: var(--radius-lg);
+            margin-top: 5px;
+            overflow: hidden;
+            z-index: 100;
+            display: none;
+            backdrop-filter: blur(10px);
+        }
+        
+        .language-selector.active .language-options {
+            display: block;
+        }
+        
+        .language-option {
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--select-text);
+        }
+        
+        .language-option:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .language-option.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        /* 名单管理样式 */
+        .name-management {
+            margin-top: 20px;
+        }
+        
+        .name-edit-area {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .name-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-lg);
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text);
+            font-size: 1rem;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+        }
+        
+        .name-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .add-name-btn {
+            padding: 12px 24px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+        
+        .add-name-btn:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+        
+        .names-container {
+            height: 300px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            background: rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+        }
+        
+        .names-list {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            height: 100%;
+            overflow-y: auto;
+        }
+        
+        .name-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            transition: var(--transition);
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+        }
+        
+        .name-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateX(5px);
+        }
+        
+        .name-item.editing {
+            background: rgba(74, 107, 255, 0.2);
+        }
+        
+        .name-text {
+            flex: 1;
+            font-weight: 500;
+        }
+        
+        .name-actions {
+            display: flex;
+            gap: 8px;
+            opacity: 0;
+            transition: var(--transition);
+        }
+        
+        .name-item:hover .name-actions {
+            opacity: 1;
+        }
+        
+        .name-edit-btn,
+        .name-delete-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        
+        .name-edit-btn {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+        }
+        
+        .name-edit-btn:hover {
+            background: rgba(255, 193, 7, 0.3);
+        }
+        
+        .name-delete-btn {
+            background: rgba(244, 67, 54, 0.2);
+            color: #f44336;
+        }
+        
+        .name-delete-btn:hover {
+            background: rgba(244, 67, 54, 0.3);
+        }
+        
+        .edit-input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid var(--primary);
+            border-radius: var(--radius-sm);
+            background: rgba(255, 255, 255, 0.15);
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+        
+        .edit-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .save-btn,
+        .cancel-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .save-btn {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .cancel-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text);
+        }
+        
+        /* 关闭按钮 */
+        .settings-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: var(--radius-lg);
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+            z-index: 10;
+        }
+        
+        .settings-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 8px 20px var(--shadow);
+        }
+        
+        /* 导入名单按钮 */
+        .import-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .import-btn {
+            padding: 12px 24px;
+            background: rgba(74, 107, 255, 0.2);
+            color: var(--primary);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .import-btn:hover {
+            background: rgba(74, 107, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        /* 设置操作按钮 - 水平排列 */
+        .settings-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .action-btn {
+            flex: 1;
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            backdrop-filter: blur(10px);
+            min-height: 50px;
+        }
+        
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .action-btn.export {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4caf50;
+            border-color: rgba(76, 175, 80, 0.3);
+        }
+        
+        .action-btn.export:hover {
+            background: rgba(76, 175, 80, 0.3);
+        }
+        
+        .action-btn.import {
+            background: rgba(255, 152, 0, 0.2);
+            color: #ff9800;
+            border-color: rgba(255, 152, 0, 0.3);
+        }
+        
+        .action-btn.import:hover {
+            background: rgba(255, 152, 0, 0.3);
+        }
+        
+        .action-btn.reset {
+            background: rgba(244, 67, 54, 0.2);
+            color: #f44336;
+            border-color: rgba(244, 67, 54, 0.3);
+        }
+        
+        .action-btn.reset:hover {
+            background: rgba(244, 67, 54, 0.3);
+        }
+        
+        /* 关于页面样式 */
+        .about-logo {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .logo-img {
+            max-width: 200px;
+            height: auto;
+            border-radius: var(--radius-lg);
+        }
+        
+        .version-info {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
+        
+        .links-section {
+            margin-top: 30px;
+        }
+        
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .link-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-lg);
+            transition: var(--transition);
+            text-decoration: none;
+            color: var(--text);
+            backdrop-filter: blur(10px);
+        }
+        
+        .link-card:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-5px);
+        }
+        
+        .link-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .link-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .link-desc {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            text-align: center;
+        }
+        
+        .bilibili-link {
+            color: #00a1d6;
+        }
+        
+        .github-link {
+            color: #ffffff;
+        }
+        
+        /* B站链接样式 */
+        .bilibili-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: rgba(0, 161, 214, 0.2);
+            color: #00a1d6;
+            text-decoration: none;
+            border-radius: var(--radius-lg);
+            transition: var(--transition);
+            border: 1px solid rgba(0, 161, 214, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .bilibili-link:hover {
+            background: rgba(0, 161, 214, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 161, 214, 0.2);
+        }
+        
+        .bilibili-icon {
+            color: #00a1d6;
+            font-size: 1.2rem;
+        }
+        
+        /* 标签页内容 */
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                border-radius: var(--radius-xl);
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .selected-name {
+                font-size: 2.5rem;
+                padding: 15px 30px;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+                padding: 14px 28px;
+            }
+            
+            .top-controls {
+                top: 15px;
+                right: 15px;
+            }
+            
+            .icon-btn {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .settings-content {
+                flex-direction: column;
+                height: 90vh;
+                max-width: 95%;
+            }
+            
+            .settings-nav {
+                width: 100%;
+                flex-direction: row;
+                overflow-x: auto;
+                padding: 15px;
+                border-right: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            
+            .nav-item {
+                border-left: none;
+                border-bottom: 3px solid transparent;
+                white-space: nowrap;
+            }
+            
+            .nav-item.active {
+                border-left-color: transparent;
+                border-bottom-color: var(--primary);
+            }
+            
+            .settings-body {
+                padding: 20px;
+            }
+            
+            .option-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .option-control {
+                margin-left: 0;
+                width: 100%;
+            }
+            
+            .radio-group {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .name-edit-area {
+                flex-direction: column;
+            }
+            
+            .settings-actions {
+                flex-direction: column;
+            }
+            
+            .settings-close {
+                top: 15px;
+                right: 15px;
+                width: 40px;
+                height: 40px;
+            }
+            
+            .links-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .language-selector {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body class="no-bg material-acrylic">
+    <div class="container">
+        <div class="top-controls">
+            <button class="icon-btn" id="settingsBtn">
+                <i class="fas fa-cog"></i>
+            </button>
+        </div>
+        
+        <h1 id="appTitle">量子点名</h1>
+        
+        <div class="status" id="status">名单已加载</div>
+        
+        <div class="result-area">
+            <h2 id="selectedText">被选中的是：</h2>
+            <div class="selected-name" id="selectedName">等待点名</div>
+        </div>
+        
+        <div class="controls">
+            <button class="btn btn-start" id="startStopBtn">
+                <i class="fas fa-play"></i>
+                <span id="startRollCallText">开始点名</span>
+            </button>
+            <button class="btn btn-reload" id="reloadBtn">
+                <i class="fas fa-redo"></i>
+                <span id="reloadNamesText">重新加载</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- 设置面板 -->
+    <div class="settings-panel" id="settingsPanel">
+        <div class="settings-content">
+            <!-- 左侧导航 -->
+            <div class="settings-nav">
+                <div class="nav-item active" data-tab="general">
+                    <i class="fas fa-cog"></i>
+                    <span id="navGeneral">通用</span>
+                </div>
+                <div class="nav-item" data-tab="appearance">
+                    <i class="fas fa-palette"></i>
+                    <span id="navAppearance">外观</span>
+                </div>
+                <div class="nav-item" data-tab="names">
+                    <i class="fas fa-users"></i>
+                    <span id="navNames">名单</span>
+                </div>
+                <div class="nav-item" data-tab="about">
+                    <i class="fas fa-info-circle"></i>
+                    <span id="navAbout">关于</span>
+                </div>
+            </div>
+            
+            <!-- 右侧内容区域 -->
+            <div class="settings-main">
+                <div class="settings-header">
+                    <h2 id="currentTabTitle">通用设置</h2>
+                </div>
+                
+                <div class="settings-body">
+                    <!-- 通用设置 -->
+                    <div class="tab-content active" id="general-content">
+                        <div class="settings-group">
+                            <h3 class="group-title" id="languageTitle">语言设置</h3>
+                            <div class="option-row">
+                                <div class="option-info">
+                                    <div class="option-title" id="languageSettingTitle">界面语言</div>
+                                    <div class="option-desc" id="languageSettingDesc">选择界面显示语言</div>
+                                </div>
+                                <div class="option-control">
+                                    <div class="language-selector" id="languageSelector">
+                                        <div class="selected-language">
+                                            <span id="currentLanguageText">简体中文</span>
+                                            <i class="fas fa-chevron-down"></i>
+                                        </div>
+                                        <div class="language-options">
+                                            <div class="language-option active" data-value="zh-CN">简体中文</div>
+                                            <div class="language-option" data-value="zh-TW">繁體中文</div>
+                                            <div class="language-option" data-value="en-US">English</div>
+                                            <div class="language-option" data-value="ja-JP">日本語</div>
+                                            <div class="language-option" data-value="ko-KR">한국어</div>
+                                            <div class="language-option" data-value="fr-FR">Français</div>
+                                            <div class="language-option" data-value="de-DE">Deutsch</div>
+                                            <div class="language-option" data-value="es-ES">Español</div>
+                                            <div class="language-option" data-value="ru-RU">Русский</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="settings-group">
+                            <h3 class="group-title" id="settingsActionsTitle">设置操作</h3>
+                            <div class="settings-actions">
+                                <button class="action-btn export" id="exportSettingsBtn">
+                                    <i class="fas fa-download"></i>
+                                    <span id="exportSettingsText">导出设置</span>
+                                </button>
+                                <button class="action-btn import" id="importSettingsBtn">
+                                    <i class="fas fa-upload"></i>
+                                    <span id="importSettingsText">导入设置</span>
+                                </button>
+                                <button class="action-btn reset" id="resetSettingsBtn">
+                                    <i class="fas fa-redo"></i>
+                                    <span id="resetSettingsText">重置设置</span>
+                                </button>
+                                <input type="file" id="settingsFileInput" accept=".json" style="display: none;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 外观设置 -->
+                    <div class="tab-content" id="appearance-content">
+                        <div class="settings-group">
+                            <h3 class="group-title" id="themeTitle">主题设置</h3>
+                            <div class="option-row">
+                                <div class="option-info">
+                                    <div class="option-title" id="themeModeTitle">主题模式</div>
+                                    <div class="option-desc" id="themeModeDesc">选择适合您环境的颜色主题</div>
+                                </div>
+                                <div class="option-control">
+                                    <div class="radio-group" id="themeGroup">
+                                        <div class="radio-option active" data-value="dark" id="darkThemeOption">深色</div>
+                                        <div class="radio-option" data-value="light" id="lightThemeOption">浅色</div>
+                                        <div class="radio-option" data-value="auto" id="autoThemeOption">自动</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="settings-group">
+                            <h3 class="group-title" id="materialTitle">材质效果</h3>
+                            <div class="option-row">
+                                <div class="option-info">
+                                    <div class="option-title" id="materialTypeTitle">材质类型</div>
+                                    <div class="option-desc" id="materialTypeDesc">选择界面元素的视觉材质效果</div>
+                                </div>
+                                <div class="option-control">
+                                    <div class="radio-group" id="materialGroup">
+                                        <div class="radio-option active" data-value="acrylic" id="acrylicOption">亚克力</div>
+                                        <div class="radio-option" data-value="frosted-glass" id="frostedGlassOption">毛玻璃</div>
+                                        <div class="radio-option" data-value="none" id="noMaterialOption">无材质</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 名单管理 -->
+                    <div class="tab-content" id="names-content">
+                        <div class="settings-group">
+                            <h3 class="group-title" id="nameManagementTitle">名单管理</h3>
+                            <div class="name-management">
+                                <div class="name-edit-area">
+                                    <input type="text" class="name-input" id="newNameInput" placeholder="输入新名字...">
+                                    <button class="add-name-btn" id="addNameBtn">
+                                        <span id="addNameBtnText">添加名字</span>
+                                    </button>
+                                </div>
+                                
+                                <div class="names-container">
+                                    <div class="names-list" id="namesList">
+                                        <!-- 可编辑的名单将在这里显示 -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="import-section">
+                            <button class="import-btn" id="importNamesBtn">
+                                <i class="fas fa-file-import"></i>
+                                <span id="importNamesBtnText">从文件导入名单</span>
+                            </button>
+                            <input type="file" id="namesFileInput" accept=".txt,.csv" style="display: none;">
+                        </div>
+                    </div>
+
+                    <!-- 关于 -->
+                    <div class="tab-content" id="about-content">
+                        <div class="settings-group">
+                            <div style="padding: 25px; background: rgba(255, 255, 255, 0.05); border-radius: var(--radius-xl); backdrop-filter: blur(10px);">
+                                <!-- Logo 和版本信息 -->
+                                <div class="about-logo">
+                                    <img src="assets/logo.png" alt="量子点名" class="logo-img" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiByeD0iMTYiIGZpbGw9IiM2YzhmZmYiLz4KPHRleHQgeD0iMTAwIiB5PSIxMTAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiPueZvuW6pueUteWtkDwvdGV4dD4KPC9zdmc+'">
+                                </div>
+                                <div class="version-info">
+                                    v2.1.2 - by mc_xinyu
+                                </div>
+                                
+                                <!-- 链接分类 -->
+                                <div class="links-section">
+                                    <h3 class="group-title" id="linksTitle">链接</h3>
+                                    <div class="links-grid">
+                                        <a href="https://space.bilibili.com/3546594301446265" target="_blank" class="link-card bilibili-link">
+                                            <i class="fab fa-bilibili link-icon"></i>
+                                            <div class="link-title" id="bilibiliHomeText">Bilibili 主页</div>
+                                        </a>
+                                        <a href="https://github.com/mc-xinyu" target="_blank" class="link-card github-link">
+                                            <i class="fab fa-github link-icon"></i>
+                                            <div class="link-title" id="githubPageText">Github 项目</div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 关闭按钮 -->
+            <button class="settings-close" id="closeSettings">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // 在这里修改名单 - 用逗号或换行分隔名字
+        const defaultNames = ["张三", "李四", "王五", "赵六", "钱七"];
+        
+        // 语言资源
+        const languageResources = {
+            'zh-CN': {
+                'appTitle': '量子点名',
+                'statusLoaded': '名单已加载',
+                'statusNoNames': '名单为空，请添加名字',
+                'selectedText': '被选中的是：',
+                'waitingText': '等待点名',
+                'startRollCall': '开始点名',
+                'stopRollCall': '暂停点名',
+                'reloadNames': '重新加载',
+                'generalSettings': '通用设置',
+                'appearanceSettings': '外观设置',
+                'nameManagement': '名单管理',
+                'aboutSystem': '关于系统',
+                'languageTitle': '语言设置',
+                'languageSetting': '界面语言',
+                'languageDesc': '选择界面显示语言',
+                'settingsActions': '设置操作',
+                'exportSettings': '导出设置',
+                'importSettings': '导入设置',
+                'resetSettings': '重置设置',
+                'colorScheme': '颜色方案',
+                'themeTitle': '主题设置',
+                'themeMode': '主题模式',
+                'themeDesc': '选择适合您环境的颜色主题',
+                'dark': '深色',
+                'light': '浅色',
+                'auto': '自动',
+                'uiMaterial': '界面材质',
+                'materialTitle': '材质效果',
+                'materialType': '材质类型',
+                'materialDesc': '选择界面元素的视觉材质效果',
+                'noMaterial': '无材质',
+                'acrylic': '亚克力',
+                'frostedGlass': '毛玻璃',
+                'addName': '添加名字',
+                'importNames': '从文件导入名单',
+                'edit': '编辑',
+                'delete': '删除',
+                'save': '保存',
+                'cancel': '取消',
+                'aboutTitle': '关于量子点名系统',
+                'links': '链接',
+                'bilibiliHome': 'Bilibili 主页',
+                'githubPage': 'Github 项目',
+                'confirmDelete': '确定要删除 "{name}" 吗？',
+                'confirmReset': '确定要重置所有设置吗？这将清除所有自定义设置和名单，此操作不可撤销！',
+                'confirmImport': '导入设置将覆盖当前所有设置，确定要继续吗？',
+                'exportSuccess': '设置已成功导出！',
+                'importSuccess': '设置已成功导入！页面将刷新以应用新设置。',
+                'resetSuccess': '所有设置已重置！页面将刷新以应用默认设置。',
+                'importFailed': '导入失败：文件格式不正确',
+                'namesImportSuccess': '成功导入 {count} 个名字',
+                'namesImportFailed': '文件为空或格式不正确',
+                'nameAdded': '成功添加 {name}，当前共有 {count} 个名字',
+                'namesReloaded': '已重新加载 {count} 个名字',
+                'namesImported': '已从文件导入 {count} 个名字'
+            },
+            'zh-TW': {
+                'appTitle': '量子點名',
+                'statusLoaded': '名單已加載',
+                'statusNoNames': '名單為空，請添加名字',
+                'selectedText': '被選中的是：',
+                'waitingText': '等待點名',
+                'startRollCall': '開始點名',
+                'stopRollCall': '暫停點名',
+                'reloadNames': '重新加載',
+                'generalSettings': '通用設置',
+                'appearanceSettings': '外觀設置',
+                'nameManagement': '名單管理',
+                'aboutSystem': '關於系統',
+                'languageTitle': '語言設置',
+                'languageSetting': '界面語言',
+                'languageDesc': '選擇界面顯示語言',
+                'settingsActions': '設置操作',
+                'exportSettings': '導出設置',
+                'importSettings': '導入設置',
+                'resetSettings': '重置設置',
+                'colorScheme': '顏色方案',
+                'themeTitle': '主題設置',
+                'themeMode': '主題模式',
+                'themeDesc': '選擇適合您環境的顏色主題',
+                'dark': '深色',
+                'light': '淺色',
+                'auto': '自動',
+                'uiMaterial': '界面材質',
+                'materialTitle': '材質效果',
+                'materialType': '材質類型',
+                'materialDesc': '選擇界面元素的視覺材質效果',
+                'noMaterial': '無材質',
+                'acrylic': '亞克力',
+                'frostedGlass': '毛玻璃',
+                'addName': '添加名字',
+                'importNames': '從文件導入名單',
+                'edit': '編輯',
+                'delete': '刪除',
+                'save': '保存',
+                'cancel': '取消',
+                'aboutTitle': '關於量子點名系統',
+                'links': '鏈接',
+                'bilibiliHome': 'Bilibili 主頁',
+                'githubPage': 'Github 項目',
+                'confirmDelete': '確定要刪除 "{name}" 嗎？',
+                'confirmReset': '確定要重置所有設置嗎？這將清除所有自定義設置和名單，此操作不可撤銷！',
+                'confirmImport': '導入設置將覆蓋當前所有設置，確定要繼續嗎？',
+                'exportSuccess': '設置已成功導出！',
+                'importSuccess': '設置已成功導入！頁面將刷新以應用新設置。',
+                'resetSuccess': '所有設置已重置！頁面將刷新以應用默認設置。',
+                'importFailed': '導入失敗：文件格式不正確',
+                'namesImportSuccess': '成功導入 {count} 個名字',
+                'namesImportFailed': '文件為空或格式不正確',
+                'nameAdded': '成功添加 {name}，當前共有 {count} 個名字',
+                'namesReloaded': '已重新加載 {count} 個名字',
+                'namesImported': '已從文件導入 {count} 個名字'
+            },
+            'en-US': {
+                'appTitle': 'Quantum Roll Call',
+                'statusLoaded': 'Names loaded successfully',
+                'statusNoNames': 'Name list is empty, please add names',
+                'selectedText': 'Selected:',
+                'waitingText': 'Waiting for roll call',
+                'startRollCall': 'Start Roll Call',
+                'stopRollCall': 'Stop Roll Call',
+                'reloadNames': 'Reload Names',
+                'generalSettings': 'General Settings',
+                'appearanceSettings': 'Appearance Settings',
+                'nameManagement': 'Name Management',
+                'aboutSystem': 'About System',
+                'languageTitle': 'Language Settings',
+                'languageSetting': 'Interface Language',
+                'languageDesc': 'Select interface display language',
+                'settingsActions': 'Settings Actions',
+                'exportSettings': 'Export Settings',
+                'importSettings': 'Import Settings',
+                'resetSettings': 'Reset Settings',
+                'colorScheme': 'Color Scheme',
+                'themeTitle': 'Theme Settings',
+                'themeMode': 'Theme Mode',
+                'themeDesc': 'Select a color theme suitable for your environment',
+                'dark': 'Dark',
+                'light': 'Light',
+                'auto': 'Auto',
+                'uiMaterial': 'UI Material',
+                'materialTitle': 'Material Effect',
+                'materialType': 'Material Type',
+                'materialDesc': 'Select visual material effect for interface elements',
+                'noMaterial': 'No Material',
+                'acrylic': 'Acrylic',
+                'frostedGlass': 'Frosted Glass',
+                'addName': 'Add Name',
+                'importNames': 'Import Names from File',
+                'edit': 'Edit',
+                'delete': 'Delete',
+                'save': 'Save',
+                'cancel': 'Cancel',
+                'aboutTitle': 'About Quantum Roll Call System',
+                'links': 'Links',
+                'bilibiliHome': 'Bilibili Home',
+                'githubPage': 'Github Project',
+                'confirmDelete': 'Are you sure you want to delete "{name}"?',
+                'confirmReset': 'Are you sure you want to reset all settings? This will clear all custom settings and name lists, this operation cannot be undone!',
+                'confirmImport': 'Importing settings will overwrite all current settings, are you sure you want to continue?',
+                'exportSuccess': 'Settings exported successfully!',
+                'importSuccess': 'Settings imported successfully! The page will refresh to apply the new settings.',
+                'resetSuccess': 'All settings have been reset! The page will refresh to apply default settings.',
+                'importFailed': 'Import failed: file format is incorrect',
+                'namesImportSuccess': 'Successfully imported {count} names',
+                'namesImportFailed': 'File is empty or format is incorrect',
+                'nameAdded': 'Successfully added {name}, currently have {count} names in total',
+                'namesReloaded': 'Reloaded {count} names',
+                'namesImported': 'Imported {count} names from file'
+            },
+            'ja-JP': {
+                'appTitle': '量子点名',
+                'statusLoaded': 'リストが読み込まれました',
+                'statusNoNames': 'リストが空です。名前を追加してください',
+                'selectedText': '選ばれたのは：',
+                'waitingText': '点名待機中',
+                'startRollCall': '点名開始',
+                'stopRollCall': '点名停止',
+                'reloadNames': 'リスト再読み込み',
+                'generalSettings': '一般設定',
+                'appearanceSettings': '外観設定',
+                'nameManagement': '名簿管理',
+                'aboutSystem': 'システムについて',
+                'languageTitle': '言語設定',
+                'languageSetting': 'インターフェース言語',
+                'languageDesc': '表示言語を選択',
+                'settingsActions': '設定操作',
+                'exportSettings': '設定をエクスポート',
+                'importSettings': '設定をインポート',
+                'resetSettings': '設定をリセット',
+                'colorScheme': 'カラースキーム',
+                'themeTitle': 'テーマ設定',
+                'themeMode': 'テーマモード',
+                'themeDesc': '環境に適したカラーテーマを選択',
+                'dark': 'ダーク',
+                'light': 'ライト',
+                'auto': '自動',
+                'uiMaterial': 'UIマテリアル',
+                'materialTitle': 'マテリアル効果',
+                'materialType': 'マテリアルタイプ',
+                'materialDesc': 'インターフェース要素の視覚的マテリアル効果を選択',
+                'noMaterial': 'マテリアルなし',
+                'acrylic': 'アクリル',
+                'frostedGlass': 'すりガラス',
+                'addName': '名前を追加',
+                'importNames': 'ファイルから名簿をインポート',
+                'edit': '編集',
+                'delete': '削除',
+                'save': '保存',
+                'cancel': 'キャンセル',
+                'aboutTitle': '量子点名システムについて',
+                'links': 'リンク',
+                'bilibiliHome': 'Bilibili ホーム',
+                'githubPage': 'Github プロジェクト',
+                'confirmDelete': '「{name}」を削除してもよろしいですか？',
+                'confirmReset': 'すべての設定をリセットしてもよろしいですか？これによりすべてのカスタム設定と名簿がクリアされます。この操作は元に戻せません！',
+                'confirmImport': '設定をインポートすると現在のすべての設定が上書きされます。続行してもよろしいですか？',
+                'exportSuccess': '設定が正常にエクスポートされました！',
+                'importSuccess': '設定が正常にインポートされました！新しい設定を適用するためにページがリフレッシュされます。',
+                'resetSuccess': 'すべての設定がリセットされました！デフォルト設定を適用するためにページがリフレッシュされます。',
+                'importFailed': 'インポート失敗：ファイル形式が正しくありません',
+                'namesImportSuccess': '{count}個の名前を正常にインポートしました',
+                'namesImportFailed': 'ファイルが空または形式が正しくありません',
+                'nameAdded': '{name}を正常に追加しました。現在{count}個の名前があります',
+                'namesReloaded': '{count}個の名前を再読み込みしました',
+                'namesImported': 'ファイルから{count}個の名前をインポートしました'
+            },
+            'ko-KR': {
+                'appTitle': '양자 출석',
+                'statusLoaded': '명단이 로드되었습니다',
+                'statusNoNames': '명단이 비어 있습니다. 이름을 추가해 주세요',
+                'selectedText': '선택된 사람:',
+                'waitingText': '출석 부사 대기 중',
+                'startRollCall': '출석 부사 시작',
+                'stopRollCall': '출석 부사 중지',
+                'reloadNames': '명단 다시 로드',
+                'generalSettings': '일반 설정',
+                'appearanceSettings': '외관 설정',
+                'nameManagement': '명단 관리',
+                'aboutSystem': '시스템 정보',
+                'languageTitle': '언어 설정',
+                'languageSetting': '인터페이스 언어',
+                'languageDesc': '표시 언어 선택',
+                'settingsActions': '설정 작업',
+                'exportSettings': '설정 내보내기',
+                'importSettings': '설정 가져오기',
+                'resetSettings': '설정 초기화',
+                'colorScheme': '색상 구성',
+                'themeTitle': '테마 설정',
+                'themeMode': '테마 모드',
+                'themeDesc': '환경에 맞는 색상 테마 선택',
+                'dark': '다크',
+                'light': '라이트',
+                'auto': '자동',
+                'uiMaterial': 'UI 재질',
+                'materialTitle': '재질 효과',
+                'materialType': '재질 유형',
+                'materialDesc': '인터페이스 요소의 시각적 재질 효과 선택',
+                'noMaterial': '재질 없음',
+                'acrylic': '아크릴',
+                'frostedGlass': '프로스트 글래스',
+                'addName': '이름 추가',
+                'importNames': '파일에서 명단 가져오기',
+                'edit': '편집',
+                'delete': '삭제',
+                'save': '저장',
+                'cancel': '취소',
+                'aboutTitle': '양자 출석 시스템 정보',
+                'links': '링크',
+                'bilibiliHome': 'Bilibili 홈',
+                'githubPage': 'Github 프로젝트',
+                'confirmDelete': '"{name}"을(를) 삭제하시겠습니까?',
+                'confirmReset': '모든 설정을 초기화하시겠습니까? 이 작업은 모든 사용자 정의 설정과 명단을 지우며, 이 작업은 취소할 수 없습니다!',
+                'confirmImport': '설정을 가져오면 현재 모든 설정이 덮어쓰여집니다. 계속하시겠습니까?',
+                'exportSuccess': '설정이 성공적으로 내보내졌습니다!',
+                'importSuccess': '설정이 성공적으로 가져와졌습니다! 새 설정을 적용하기 위해 페이지가 새로고침됩니다.',
+                'resetSuccess': '모든 설정이 초기화되었습니다! 기본 설정을 적용하기 위해 페이지가 새로고침됩니다.',
+                'importFailed': '가져오기 실패: 파일 형식이 올바르지 않습니다',
+                'namesImportSuccess': '{count}개의 이름을 성공적으로 가져왔습니다',
+                'namesImportFailed': '파일이 비어 있거나 형식이 올바르지 않습니다',
+                'nameAdded': '{name}을(를) 성공적으로 추가했습니다. 현재 {count}개의 이름이 있습니다',
+                'namesReloaded': '{count}개의 이름을 다시 로드했습니다',
+                'namesImported': '파일에서 {count}개의 이름을 가져왔습니다'
+            },
+            'fr-FR': {
+                'appTitle': 'Appel Quantique',
+                'statusLoaded': 'Liste chargée avec succès',
+                'statusNoNames': 'La liste des noms est vide, veuillez ajouter des noms',
+                'selectedText': 'Sélectionné :',
+                'waitingText': 'En attente d\'appel',
+                'startRollCall': 'Commencer l\'appel',
+                'stopRollCall': 'Arrêter l\'appel',
+                'reloadNames': 'Recharger les noms',
+                'generalSettings': 'Paramètres généraux',
+                'appearanceSettings': 'Paramètres d\'apparence',
+                'nameManagement': 'Gestion des noms',
+                'aboutSystem': 'À propos du système',
+                'languageTitle': 'Paramètres de langue',
+                'languageSetting': 'Langue de l\'interface',
+                'languageDesc': 'Sélectionnez la langue d\'affichage',
+                'settingsActions': 'Actions des paramètres',
+                'exportSettings': 'Exporter les paramètres',
+                'importSettings': 'Importer les paramètres',
+                'resetSettings': 'Réinitialiser les paramètres',
+                'colorScheme': 'Schéma de couleurs',
+                'themeTitle': 'Paramètres du thème',
+                'themeMode': 'Mode thème',
+                'themeDesc': 'Sélectionnez un thème de couleur adapté à votre environnement',
+                'dark': 'Sombre',
+                'light': 'Clair',
+                'auto': 'Auto',
+                'uiMaterial': 'Matériau de l\'interface',
+                'materialTitle': 'Effet matériau',
+                'materialType': 'Type de matériau',
+                'materialDesc': 'Sélectionnez l\'effet visuel du matériau pour les éléments de l\'interface',
+                'noMaterial': 'Aucun matériau',
+                'acrylic': 'Acrylique',
+                'frostedGlass': 'Verre dépoli',
+                'addName': 'Ajouter un nom',
+                'importNames': 'Importer les noms depuis un fichier',
+                'edit': 'Modifier',
+                'delete': 'Supprimer',
+                'save': 'Enregistrer',
+                'cancel': 'Annuler',
+                'aboutTitle': 'À propos du système d\'appel quantique',
+                'links': 'Liens',
+                'bilibiliHome': 'Page d\'accueil Bilibili',
+                'githubPage': 'Projet Github',
+                'confirmDelete': 'Êtes-vous sûr de vouloir supprimer "{name}" ?',
+                'confirmReset': 'Êtes-vous sûr de vouloir réinitialiser tous les paramètres ? Cela effacera tous les paramètres personnalisés et les listes de noms, cette opération est irréversible !',
+                'confirmImport': 'L\'importation des paramètres écrasera tous les paramètres actuels, êtes-vous sûr de vouloir continuer ?',
+                'exportSuccess': 'Paramètres exportés avec succès !',
+                'importSuccess': 'Paramètres importés avec succès ! La page va se rafraîchir pour appliquer les nouveaux paramètres.',
+                'resetSuccess': 'Tous les paramètres ont été réinitialisés ! La page va se rafraîchir pour appliquer les paramètres par défaut.',
+                'importFailed': 'Échec de l\'importation : format de fichier incorrect',
+                'namesImportSuccess': '{count} noms importés avec succès',
+                'namesImportFailed': 'Le fichier est vide ou le format est incorrect',
+                'nameAdded': '{name} ajouté avec succès, {count} noms au total',
+                'namesReloaded': '{count} noms rechargés',
+                'namesImported': '{count} noms importés depuis le fichier'
+            },
+            'de-DE': {
+                'appTitle': 'Quanten-Namensaufruf',
+                'statusLoaded': 'Namensliste erfolgreich geladen',
+                'statusNoNames': 'Namensliste ist leer, bitte Namen hinzufügen',
+                'selectedText': 'Ausgewählt:',
+                'waitingText': 'Warte auf Namensaufruf',
+                'startRollCall': 'Namensaufruf starten',
+                'stopRollCall': 'Namensaufruf stoppen',
+                'reloadNames': 'Namen neu laden',
+                'generalSettings': 'Allgemeine Einstellungen',
+                'appearanceSettings': 'Darstellungseinstellungen',
+                'nameManagement': 'Namensverwaltung',
+                'aboutSystem': 'Über das System',
+                'languageTitle': 'Spracheinstellungen',
+                'languageSetting': 'Oberflächensprache',
+                'languageDesc': 'Anzeigesprache auswählen',
+                'settingsActions': 'Einstellungsaktionen',
+                'exportSettings': 'Einstellungen exportieren',
+                'importSettings': 'Einstellungen importieren',
+                'resetSettings': 'Einstellungen zurücksetzen',
+                'colorScheme': 'Farbschema',
+                'themeTitle': 'Theme-Einstellungen',
+                'themeMode': 'Themenmodus',
+                'themeDesc': 'Wählen Sie ein für Ihre Umgebung geeignetes Farbthema aus',
+                'dark': 'Dunkel',
+                'light': 'Hell',
+                'auto': 'Automatisch',
+                'uiMaterial': 'UI-Material',
+                'materialTitle': 'Materialeffekt',
+                'materialType': 'Materialtyp',
+                'materialDesc': 'Wählen Sie den visuellen Materialeffekt für Oberflächenelemente aus',
+                'noMaterial': 'Kein Material',
+                'acrylic': 'Acryl',
+                'frostedGlass': 'Milchglas',
+                'addName': 'Namen hinzufügen',
+                'importNames': 'Namen aus Datei importieren',
+                'edit': 'Bearbeiten',
+                'delete': 'Löschen',
+                'save': 'Speichern',
+                'cancel': 'Abbrechen',
+                'aboutTitle': 'Über das Quanten-Namensaufrufsystem',
+                'links': 'Links',
+                'bilibiliHome': 'Bilibili Startseite',
+                'githubPage': 'Github Projekt',
+                'confirmDelete': 'Sind Sie sicher, dass Sie "{name}" löschen möchten?',
+                'confirmReset': 'Sind Sie sicher, dass Sie alle Einstellungen zurücksetzen möchten? Dadurch werden alle benutzerdefinierten Einstellungen und Namenslisten gelöscht. Dieser Vorgang kann nicht rückgängig gemacht werden!',
+                'confirmImport': 'Das Importieren von Einstellungen überschreibt alle aktuellen Einstellungen. Sind Sie sicher, dass Sie fortfahren möchten?',
+                'exportSuccess': 'Einstellungen erfolgreich exportiert!',
+                'importSuccess': 'Einstellungen erfolgreich importiert! Die Seite wird aktualisiert, um die neuen Einstellungen zu übernehmen.',
+                'resetSuccess': 'Alle Einstellungen wurden zurückgesetzt! Die Seite wird aktualisiert, um die Standardeinstellungen zu übernehmen.',
+                'importFailed': 'Import fehlgeschlagen: Dateiformat ist falsch',
+                'namesImportSuccess': 'Erfolgreich {count} Namen importiert',
+                'namesImportFailed': 'Datei ist leer oder Format ist falsch',
+                'nameAdded': '{name} erfolgreich hinzugefügt, insgesamt {count} Namen',
+                'namesReloaded': '{count} Namen neu geladen',
+                'namesImported': '{count} Namen aus Datei importiert'
+            },
+            'es-ES': {
+                'appTitle': 'Llamada Cuántica',
+                'statusLoaded': 'Lista de nombres cargada exitosamente',
+                'statusNoNames': 'La lista de nombres está vacía, por favor agregue nombres',
+                'selectedText': 'Seleccionado:',
+                'waitingText': 'Esperando llamada',
+                'startRollCall': 'Comenzar llamada',
+                'stopRollCall': 'Detener llamada',
+                'reloadNames': 'Recargar nombres',
+                'generalSettings': 'Configuración general',
+                'appearanceSettings': 'Configuración de apariencia',
+                'nameManagement': 'Gestión de nombres',
+                'aboutSystem': 'Acerca del sistema',
+                'languageTitle': 'Configuración de idioma',
+                'languageSetting': 'Idioma de la interfaz',
+                'languageDesc': 'Seleccione el idioma de visualización',
+                'settingsActions': 'Acciones de configuración',
+                'exportSettings': 'Exportar configuración',
+                'importSettings': 'Importar configuración',
+                'resetSettings': 'Restablecer configuración',
+                'colorScheme': 'Esquema de color',
+                'themeTitle': 'Configuración del tema',
+                'themeMode': 'Modo de tema',
+                'themeDesc': 'Seleccione un tema de color adecuado para su entorno',
+                'dark': 'Oscuro',
+                'light': 'Claro',
+                'auto': 'Automático',
+                'uiMaterial': 'Material de la interfaz',
+                'materialTitle': 'Efecto de material',
+                'materialType': 'Tipo de material',
+                'materialDesc': 'Seleccione el efecto visual del material para los elementos de la interfaz',
+                'noMaterial': 'Sin material',
+                'acrylic': 'Acrílico',
+                'frostedGlass': 'Vidrio esmerilado',
+                'addName': 'Agregar nombre',
+                'importNames': 'Importar nombres desde archivo',
+                'edit': 'Editar',
+                'delete': 'Eliminar',
+                'save': 'Guardar',
+                'cancel': 'Cancelar',
+                'aboutTitle': 'Acerca del sistema de llamada cuántica',
+                'links': 'Enlaces',
+                'bilibiliHome': 'Página principal de Bilibili',
+                'githubPage': 'Proyecto de Github',
+                'confirmDelete': '¿Está seguro de que desea eliminar "{name}"?',
+                'confirmReset': '¿Está seguro de que desea restablecer toda la configuración? Esto borrará toda la configuración personalizada y las listas de nombres. ¡Esta operación no se puede deshacer!',
+                'confirmImport': 'Importar la configuración sobrescribirá toda la configuración actual, ¿está seguro de que desea continuar?',
+                'exportSuccess': '¡Configuración exportada exitosamente!',
+                'importSuccess': '¡Configuración importada exitosamente! La página se actualizará para aplicar la nueva configuración.',
+                'resetSuccess': '¡Toda la configuración ha sido restablecida! La página se actualizará para aplicar la configuración predeterminada.',
+                'importFailed': 'Error de importación: formato de archivo incorrecto',
+                'namesImportSuccess': '{count} nombres importados exitosamente',
+                'namesImportFailed': 'El archivo está vacío o el formato es incorrecto',
+                'nameAdded': '{name} agregado exitosamente, actualmente hay {count} nombres en total',
+                'namesReloaded': '{count} nombres recargados',
+                'namesImported': '{count} nombres importados desde el archivo'
+            },
+            'ru-RU': {
+                'appTitle': 'Квантовый Оклик',
+                'statusLoaded': 'Список имен успешно загружен',
+                'statusNoNames': 'Список имен пуст, пожалуйста, добавьте имена',
+                'selectedText': 'Выбран:',
+                'waitingText': 'Ожидание оклика',
+                'startRollCall': 'Начать оклик',
+                'stopRollCall': 'Остановить оклик',
+                'reloadNames': 'Перезагрузить имена',
+                'generalSettings': 'Общие настройки',
+                'appearanceSettings': 'Настройки внешнего вида',
+                'nameManagement': 'Управление именами',
+                'aboutSystem': 'О системе',
+                'languageTitle': 'Настройки языка',
+                'languageSetting': 'Язык интерфейса',
+                'languageDesc': 'Выберите язык отображения',
+                'settingsActions': 'Действия с настройками',
+                'exportSettings': 'Экспорт настроек',
+                'importSettings': 'Импорт настроек',
+                'resetSettings': 'Сброс настроек',
+                'colorScheme': 'Цветовая схема',
+                'themeTitle': 'Настройки темы',
+                'themeMode': 'Режим темы',
+                'themeDesc': 'Выберите цветовую тему, подходящую для вашего окружения',
+                'dark': 'Темная',
+                'light': 'Светлая',
+                'auto': 'Авто',
+                'uiMaterial': 'Материал интерфейса',
+                'materialTitle': 'Эффект материала',
+                'materialType': 'Тип материала',
+                'materialDesc': 'Выберите визуальный эффект материала для элементов интерфейса',
+                'noMaterial': 'Без материала',
+                'acrylic': 'Акрил',
+                'frostedGlass': 'Матовое стекло',
+                'addName': 'Добавить имя',
+                'importNames': 'Импорт имен из файла',
+                'edit': 'Редактировать',
+                'delete': 'Удалить',
+                'save': 'Сохранить',
+                'cancel': 'Отмена',
+                'aboutTitle': 'О системе квантового оклика',
+                'links': 'Ссылки',
+                'bilibiliHome': 'Домашняя страница Bilibili',
+                'githubPage': 'Проект Github',
+                'confirmDelete': 'Вы уверены, что хотите удалить "{name}"?',
+                'confirmReset': 'Вы уверены, что хотите сбросить все настройки? Это очистит все пользовательские настройки и списки имен. Это действие нельзя отменить!',
+                'confirmImport': 'Импорт настроек перезапишет все текущие настройки. Вы уверены, что хотите продолжить?',
+                'exportSuccess': 'Настройки успешно экспортированы!',
+                'importSuccess': 'Настройки успешно импортированы! Страница будет обновлена для применения новых настроек.',
+                'resetSuccess': 'Все настройки сброшены! Страница будет обновлена для применения настроек по умолчанию.',
+                'importFailed': 'Ошибка импорта: неверный формат файла',
+                'namesImportSuccess': 'Успешно импортировано {count} имен',
+                'namesImportFailed': 'Файл пуст или формат неверный',
+                'nameAdded': 'Успешно добавлено {name}, всего {count} имен',
+                'namesReloaded': 'Перезагружено {count} имен',
+                'namesImported': 'Импортировано {count} имен из файла'
+            }
+        };
+        
+        // 动态文本替换函数
+        function formatText(text, params = {}) {
+            return text.replace(/{(\w+)}/g, (match, key) => {
+                return params[key] !== undefined ? params[key] : match;
+            });
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const startStopBtn = document.getElementById('startStopBtn');
+            const reloadBtn = document.getElementById('reloadBtn');
+            const selectedName = document.getElementById('selectedName');
+            const status = document.getElementById('status');
+            const settingsBtn = document.getElementById('settingsBtn');
+            const settingsPanel = document.getElementById('settingsPanel');
+            const closeSettings = document.getElementById('closeSettings');
+            const currentTabTitle = document.getElementById('currentTabTitle');
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            // 名单管理元素
+            const newNameInput = document.getElementById('newNameInput');
+            const addNameBtn = document.getElementById('addNameBtn');
+            const namesList = document.getElementById('namesList');
+            const importNamesBtn = document.getElementById('importNamesBtn');
+            const namesFileInput = document.getElementById('namesFileInput');
+            
+            // 设置操作元素
+            const exportSettingsBtn = document.getElementById('exportSettingsBtn');
+            const importSettingsBtn = document.getElementById('importSettingsBtn');
+            const resetSettingsBtn = document.getElementById('resetSettingsBtn');
+            const settingsFileInput = document.getElementById('settingsFileInput');
+            
+            // 语言选择器元素
+            const languageSelector = document.getElementById('languageSelector');
+            const currentLanguageText = document.getElementById('currentLanguageText');
+            const languageOptions = document.querySelectorAll('.language-option');
+            
+            // 单选按钮组
+            const themeGroup = document.getElementById('themeGroup');
+            const materialGroup = document.getElementById('materialGroup');
+            
+            let names = [...defaultNames];
+            let isSelecting = false;
+            let selectionInterval;
+            let editingIndex = -1;
+            let selectionSpeed = 100;
+            let currentLanguage = 'zh-CN';
+            let currentResources = languageResources[currentLanguage];
+            
+            // 初始化设置
+            function initSettings() {
+                initLanguage();
+                initTheme();
+                initMaterial();
+                initGeneral();
+                initNames();
+                initNameManagement();
+                updateUIWithLanguage();
+                
+                // 确保正确的初始标签页状态
+                switchTab('general');
+            }
+            
+            // 语言设置功能
+            function initLanguage() {
+                const savedLanguage = localStorage.getItem('language') || 'zh-CN';
+                currentLanguage = savedLanguage;
+                currentResources = languageResources[currentLanguage];
+                
+                // 更新自定义语言选择器
+                updateLanguageSelector();
+                
+                // 语言选择器事件
+                languageSelector.querySelector('.selected-language').addEventListener('click', function() {
+                    languageSelector.classList.toggle('active');
+                });
+                
+                languageOptions.forEach(option => {
+                    option.addEventListener('click', function() {
+                        const selectedLanguage = this.dataset.value;
+                        currentLanguage = selectedLanguage;
+                        currentResources = languageResources[currentLanguage];
+                        localStorage.setItem('language', selectedLanguage);
+                        
+                        // 更新选择器显示
+                        updateLanguageSelector();
+                        updateUIWithLanguage();
+                        
+                        // 关闭选择器
+                        languageSelector.classList.remove('active');
+                    });
+                });
+                
+                // 点击其他地方关闭语言选择器
+                document.addEventListener('click', function(e) {
+                    if (!languageSelector.contains(e.target)) {
+                        languageSelector.classList.remove('active');
+                    }
+                });
+            }
+            
+            function updateLanguageSelector() {
+                const languageTexts = {
+                    'zh-CN': '简体中文',
+                    'zh-TW': '繁體中文',
+                    'en-US': 'English',
+                    'ja-JP': '日本語',
+                    'ko-KR': '한국어',
+                    'fr-FR': 'Français',
+                    'de-DE': 'Deutsch',
+                    'es-ES': 'Español',
+                    'ru-RU': 'Русский'
+                };
+                
+                currentLanguageText.textContent = languageTexts[currentLanguage];
+                
+                // 更新选项激活状态
+                languageOptions.forEach(option => {
+                    if (option.dataset.value === currentLanguage) {
+                        option.classList.add('active');
+                    } else {
+                        option.classList.remove('active');
+                    }
+                });
+            }
+            
+            // 更新界面语言
+            function updateUIWithLanguage() {
+                const t = currentResources;
+                
+                // 更新主界面
+                document.title = t.appTitle;
+                document.getElementById('appTitle').textContent = t.appTitle;
+                document.getElementById('selectedText').textContent = t.selectedText;
+                document.getElementById('selectedName').textContent = t.waitingText;
+                document.getElementById('startRollCallText').textContent = t.startRollCall;
+                document.getElementById('reloadNamesText').textContent = t.reloadNames;
+                
+                // 更新状态
+                if (names.length > 0) {
+                    status.textContent = formatText(t.statusLoaded, { count: names.length });
+                } else {
+                    status.textContent = t.statusNoNames;
+                }
+                
+                // 更新导航
+                document.getElementById('navGeneral').textContent = t.generalSettings;
+                document.getElementById('navAppearance').textContent = t.appearanceSettings;
+                document.getElementById('navNames').textContent = t.nameManagement;
+                document.getElementById('navAbout').textContent = t.aboutSystem;
+                
+                // 更新当前选项卡标题
+                const activeTab = document.querySelector('.nav-item.active').dataset.tab;
+                const tabTitles = {
+                    'general': t.generalSettings,
+                    'appearance': t.appearanceSettings,
+                    'names': t.nameManagement,
+                    'about': t.aboutSystem
+                };
+                currentTabTitle.textContent = tabTitles[activeTab];
+                
+                // 更新通用设置
+                document.getElementById('languageTitle').textContent = t.languageTitle;
+                document.getElementById('languageSettingTitle').textContent = t.languageSetting;
+                document.getElementById('languageSettingDesc').textContent = t.languageDesc;
+                
+                document.getElementById('settingsActionsTitle').textContent = t.settingsActions;
+                document.getElementById('exportSettingsText').textContent = t.exportSettings;
+                document.getElementById('importSettingsText').textContent = t.importSettings;
+                document.getElementById('resetSettingsText').textContent = t.resetSettings;
+                
+                // 更新外观设置
+                document.getElementById('themeTitle').textContent = t.themeTitle;
+                document.getElementById('themeModeTitle').textContent = t.themeMode;
+                document.getElementById('themeModeDesc').textContent = t.themeDesc;
+                document.getElementById('darkThemeOption').textContent = t.dark;
+                document.getElementById('lightThemeOption').textContent = t.light;
+                document.getElementById('autoThemeOption').textContent = t.auto;
+
+                document.getElementById('materialTitle').textContent = t.materialTitle;
+                document.getElementById('materialTypeTitle').textContent = t.materialType;
+                document.getElementById('materialTypeDesc').textContent = t.materialDesc;
+                document.getElementById('acrylicOption').textContent = t.acrylic;
+                document.getElementById('frostedGlassOption').textContent = t.frostedGlass;
+                document.getElementById('noMaterialOption').textContent = t.noMaterial;
+                
+                // 更新名单管理
+                document.getElementById('nameManagementTitle').textContent = t.nameManagement;
+                newNameInput.placeholder = t.addName + '...';
+                document.getElementById('addNameBtnText').textContent = t.addName;
+                document.getElementById('importNamesBtnText').textContent = t.importNames;
+                
+                // 更新关于页面
+                document.getElementById('linksTitle').textContent = t.links;
+                document.getElementById('bilibiliHomeText').textContent = t.bilibiliHome;
+                document.getElementById('githubPageText').textContent = t.githubPage;
+                
+                // 重新渲染名单列表
+                renderEditableNamesList();
+            }
+            
+            // 选项卡切换功能
+            function switchTab(tabName) {
+                // 更新导航项状态
+                navItems.forEach(item => {
+                    if (item.dataset.tab === tabName) {
+                        item.classList.add('active');
+                    } else {
+                        item.classList.remove('active');
+                    }
+                });
+                
+                // 更新内容区域
+                const tabContents = document.querySelectorAll('.tab-content');
+                tabContents.forEach(content => {
+                    content.classList.remove('active');
+                });
+                
+                const activeContent = document.getElementById(`${tabName}-content`);
+                if (activeContent) {
+                    activeContent.classList.add('active');
+                }
+                
+                // 更新标题
+                const tabTitles = {
+                    'general': currentResources.generalSettings,
+                    'appearance': currentResources.appearanceSettings,
+                    'names': currentResources.nameManagement,
+                    'about': currentResources.aboutSystem
+                };
+                currentTabTitle.textContent = tabTitles[tabName];
+            }
+            
+            // 通用设置功能
+            function initGeneral() {
+                // 设置操作事件
+                exportSettingsBtn.addEventListener('click', exportSettings);
+                importSettingsBtn.addEventListener('click', function() {
+                    settingsFileInput.click();
+                });
+                settingsFileInput.addEventListener('change', importSettings);
+                resetSettingsBtn.addEventListener('click', resetSettings);
+            }
+            
+            // 导出设置
+            function exportSettings() {
+                const settings = {
+                    theme: localStorage.getItem('theme') || 'dark',
+                    material: localStorage.getItem('material') || 'acrylic',
+                    customNames: localStorage.getItem('customNames') || '[]',
+                    language: localStorage.getItem('language') || 'zh-CN',
+                    exportDate: new Date().toISOString()
+                };
+                
+                const dataStr = JSON.stringify(settings, null, 2);
+                const dataBlob = new Blob([dataStr], {type: 'application/json'});
+                
+                const url = URL.createObjectURL(dataBlob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `quantum_rollcall_settings_${new Date().toISOString().split('T')[0]}.json`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+                
+                alert(currentResources.exportSuccess);
+            }
+            
+            // 导入设置
+            function importSettings(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        try {
+                            const settings = JSON.parse(e.target.result);
+                            
+                            if (confirm(currentResources.confirmImport)) {
+                                // 应用导入的设置
+                                if (settings.theme) localStorage.setItem('theme', settings.theme);
+                                if (settings.material) localStorage.setItem('material', settings.material);
+                                if (settings.customNames) localStorage.setItem('customNames', settings.customNames);
+                                if (settings.language) localStorage.setItem('language', settings.language);
+                                
+                                // 重新初始化设置
+                                initSettings();
+                                alert(currentResources.importSuccess);
+                                setTimeout(() => {
+                                    location.reload();
+                                }, 1000);
+                            }
+                        } catch (error) {
+                            alert(currentResources.importFailed);
+                        }
+                    };
+                    reader.readAsText(file);
+                }
+                // 重置文件输入
+                event.target.value = '';
+            }
+            
+            // 重置设置
+            function resetSettings() {
+                if (confirm(currentResources.confirmReset)) {
+                    localStorage.clear();
+                    alert(currentResources.resetSuccess);
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+                }
+            }
+            
+            // 名单管理功能
+            function initNameManagement() {
+                renderEditableNamesList();
+                
+                // 添加名字事件
+                addNameBtn.addEventListener('click', addNewName);
+                newNameInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        addNewName();
+                    }
+                });
+                
+                // 导入名单事件
+                importNamesBtn.addEventListener('click', function() {
+                    namesFileInput.click();
+                });
+                
+                namesFileInput.addEventListener('change', handleNamesFileUpload);
+            }
+            
+            function handleNamesFileUpload(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const content = e.target.result;
+                        // 处理不同格式的文件
+                        let importedNames = [];
+                        
+                        if (file.name.endsWith('.csv')) {
+                            // CSV格式处理
+                            importedNames = content.split(',').map(name => name.trim()).filter(name => name);
+                        } else {
+                            // 文本格式处理（每行一个名字）
+                            importedNames = content.split('\n').map(name => name.trim()).filter(name => name);
+                        }
+                        
+                        if (importedNames.length > 0) {
+                            names = importedNames;
+                            renderEditableNamesList();
+                            saveNamesToStorage();
+                            status.textContent = formatText(currentResources.namesImported, { count: names.length });
+                            alert(formatText(currentResources.namesImportSuccess, { count: names.length }));
+                        } else {
+                            alert(currentResources.namesImportFailed);
+                        }
+                    };
+                    reader.readAsText(file);
+                }
+            }
+            
+            function renderEditableNamesList() {
+                namesList.innerHTML = '';
+                
+                if (names.length === 0) {
+                    const emptyMessage = document.createElement('div');
+                    emptyMessage.className = 'name-item';
+                    emptyMessage.style.justifyContent = 'center';
+                    emptyMessage.style.opacity = '0.7';
+                    emptyMessage.textContent = currentResources.statusNoNames;
+                    namesList.appendChild(emptyMessage);
+                    return;
+                }
+                
+                names.forEach((name, index) => {
+                    const nameItem = document.createElement('div');
+                    nameItem.className = 'name-item';
+                    
+                    if (editingIndex === index) {
+                        nameItem.classList.add('editing');
+                        nameItem.innerHTML = `
+                            <input type="text" class="edit-input" value="${name}" id="editInput-${index}">
+                            <div class="edit-actions">
+                                <button class="save-btn">${currentResources.save}</button>
+                                <button class="cancel-btn">${currentResources.cancel}</button>
+                            </div>
+                        `;
+                        
+                        // 添加编辑事件
+                        const saveBtn = nameItem.querySelector('.save-btn');
+                        const cancelBtn = nameItem.querySelector('.cancel-btn');
+                        const editInput = nameItem.querySelector('.edit-input');
+                        
+                        saveBtn.addEventListener('click', () => saveName(index));
+                        cancelBtn.addEventListener('click', cancelEdit);
+                        editInput.addEventListener('keypress', (e) => {
+                            if (e.key === 'Enter') saveName(index);
+                        });
+                    } else {
+                        nameItem.innerHTML = `
+                            <div class="name-text">${name}</div>
+                            <div class="name-actions">
+                                <button class="name-edit-btn">${currentResources.edit}</button>
+                                <button class="name-delete-btn">${currentResources.delete}</button>
+                            </div>
+                        `;
+                        
+                        // 添加事件
+                        const editBtn = nameItem.querySelector('.name-edit-btn');
+                        const deleteBtn = nameItem.querySelector('.name-delete-btn');
+                        
+                        editBtn.addEventListener('click', () => startEdit(index));
+                        deleteBtn.addEventListener('click', () => deleteName(index));
+                    }
+                    
+                    namesList.appendChild(nameItem);
+                });
+            }
+            
+            function startEdit(index) {
+                editingIndex = index;
+                renderEditableNamesList();
+                const editInput = document.getElementById(`editInput-${index}`);
+                if (editInput) {
+                    editInput.focus();
+                    editInput.select();
+                }
+            }
+            
+            function saveName(index) {
+                const editInput = document.getElementById(`editInput-${index}`);
+                if (editInput && editInput.value.trim()) {
+                    names[index] = editInput.value.trim();
+                    editingIndex = -1;
+                    renderEditableNamesList();
+                    saveNamesToStorage();
+                }
+            }
+            
+            function cancelEdit() {
+                editingIndex = -1;
+                renderEditableNamesList();
+            }
+            
+            function deleteName(index) {
+                if (confirm(formatText(currentResources.confirmDelete, { name: names[index] }))) {
+                    names.splice(index, 1);
+                    if (editingIndex === index) {
+                        editingIndex = -1;
+                    } else if (editingIndex > index) {
+                        editingIndex--;
+                    }
+                    renderEditableNamesList();
+                    saveNamesToStorage();
+                    // 更新状态显示
+                    if (names.length > 0) {
+                        status.textContent = formatText(currentResources.statusLoaded, { count: names.length });
+                    } else {
+                        status.textContent = currentResources.statusNoNames;
+                    }
+                }
+            }
+            
+            function addNewName() {
+                const newName = newNameInput.value.trim();
+                if (newName) {
+                    names.push(newName);
+                    newNameInput.value = '';
+                    renderEditableNamesList();
+                    saveNamesToStorage();
+                    status.textContent = formatText(currentResources.nameAdded, { name: newName, count: names.length });
+                }
+            }
+            
+            function saveNamesToStorage() {
+                localStorage.setItem('customNames', JSON.stringify(names));
+            }
+            
+            function loadNamesFromStorage() {
+                const savedNames = localStorage.getItem('customNames');
+                if (savedNames) {
+                    names = JSON.parse(savedNames);
+                }
+            }
+            
+            // 主题切换功能
+            function initTheme() {
+                const savedTheme = localStorage.getItem('theme') || 'dark';
+                handleThemeChange(savedTheme);
+                updateRadioGroup(themeGroup, savedTheme);
+                
+                // 添加主题切换事件
+                themeGroup.querySelectorAll('.radio-option').forEach(option => {
+                    option.addEventListener('click', function() {
+                        const value = this.dataset.value;
+                        updateRadioGroup(themeGroup, value);
+                        handleThemeChange(value);
+                    });
+                });
+            }
+            
+            function handleThemeChange(theme) {
+                let actualTheme = theme;
+                
+                if (theme === 'auto') {
+                    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                        actualTheme = 'dark';
+                    } else {
+                        actualTheme = 'light';
+                    }
+                }
+                
+                document.documentElement.setAttribute('data-theme', actualTheme);
+                localStorage.setItem('theme', theme);
+            }
+            
+            // 材质设置功能
+            function initMaterial() {
+                const savedMaterial = localStorage.getItem('material') || 'acrylic';
+                handleMaterialChange(savedMaterial);
+                updateRadioGroup(materialGroup, savedMaterial);
+                
+                // 添加材质切换事件
+                materialGroup.querySelectorAll('.radio-option').forEach(option => {
+                    option.addEventListener('click', function() {
+                        const value = this.dataset.value;
+                        updateRadioGroup(materialGroup, value);
+                        handleMaterialChange(value);
+                    });
+                });
+            }
+            
+            function handleMaterialChange(material) {
+                document.body.classList.remove('material-none', 'material-acrylic', 'material-frosted-glass');
+                document.body.classList.add(`material-${material}`);
+                localStorage.setItem('material', material);
+            }
+            
+            // 更新单选按钮组状态
+            function updateRadioGroup(group, value) {
+                group.querySelectorAll('.radio-option').forEach(option => {
+                    if (option.dataset.value === value) {
+                        option.classList.add('active');
+                    } else {
+                        option.classList.remove('active');
+                    }
+                });
+            }
+            
+            // 设置面板功能
+            function openSettings() {
+                settingsPanel.classList.add('active');
+            }
+            
+            function closeSettingsPanel() {
+                settingsPanel.classList.remove('active');
+            }
+            
+            // 初始化名单显示
+            function initNames() {
+                loadNamesFromStorage();
+                if (names.length > 0) {
+                    status.textContent = formatText(currentResources.statusLoaded, { count: names.length });
+                } else {
+                    status.textContent = currentResources.statusNoNames;
+                }
+            }
+            
+            // 开始随机选择
+            function startSelection() {
+                if (names.length === 0) {
+                    alert(currentResources.statusNoNames);
+                    return;
+                }
+                
+                isSelecting = true;
+                updateButtonState();
+                selectedName.classList.add('animation');
+                
+                selectionInterval = setInterval(() => {
+                    const randomIndex = Math.floor(Math.random() * names.length);
+                    selectedName.textContent = names[randomIndex];
+                }, selectionSpeed);
+            }
+            
+            // 停止选择
+            function stopSelection() {
+                isSelecting = false;
+                clearInterval(selectionInterval);
+                updateButtonState();
+                selectedName.classList.remove('animation');
+                
+                selectedName.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    selectedName.style.transform = 'scale(1)';
+                }, 300);
+            }
+            
+            // 更新按钮状态
+            function updateButtonState() {
+                if (isSelecting) {
+                    startStopBtn.innerHTML = `<i class="fas fa-pause"></i><span>${currentResources.stopRollCall}</span>`;
+                    startStopBtn.classList.remove('btn-start');
+                    startStopBtn.classList.add('btn-stop');
+                } else {
+                    startStopBtn.innerHTML = `<i class="fas fa-play"></i><span>${currentResources.startRollCall}</span>`;
+                    startStopBtn.classList.remove('btn-stop');
+                    startStopBtn.classList.add('btn-start');
+                }
+            }
+            
+            // 重新加载名单
+            function reloadNames() {
+                names = [...defaultNames];
+                status.textContent = formatText(currentResources.namesReloaded, { count: names.length });
+                
+                if (isSelecting) {
+                    stopSelection();
+                }
+                
+                selectedName.textContent = currentResources.waitingText;
+                renderEditableNamesList();
+                saveNamesToStorage();
+            }
+            
+            // 事件监听
+            startStopBtn.addEventListener('click', function() {
+                if (isSelecting) {
+                    stopSelection();
+                } else {
+                    startSelection();
+                }
+            });
+            
+            reloadBtn.addEventListener('click', reloadNames);
+            settingsBtn.addEventListener('click', openSettings);
+            closeSettings.addEventListener('click', closeSettingsPanel);
+            
+            // 导航切换事件
+            navItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    switchTab(this.dataset.tab);
+                });
+            });
+            
+            // 点击设置面板背景关闭
+            settingsPanel.addEventListener('click', function(e) {
+                if (e.target === settingsPanel) {
+                    closeSettingsPanel();
+                }
+            });
+            
+            // 初始化
+            initSettings();
+        });
+    </script>
+</body>
+</html>
