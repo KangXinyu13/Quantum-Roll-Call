@@ -7,6 +7,7 @@
     <link rel="icon" href="assets/icon.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* 现有的CSS样式保持不变 */
         * {
             margin: 0;
             padding: 0;
@@ -1146,45 +1147,34 @@
                                 <div class="option-control">
                                     <div class="language-selector" id="languageSelector">
                                         <div class="selected-language">
-                                            <span id="currentLanguageText">简体中文</span>
+                                            <span id="selectedLanguageText">简体中文</span>
                                             <i class="fas fa-chevron-down"></i>
                                         </div>
                                         <div class="language-options">
-                                            <div class="language-option active" data-value="zh-CN">简体中文</div>
-                                            <div class="language-option" data-value="zh-TW">繁體中文</div>
-                                            <div class="language-option" data-value="en-US">English</div>
-                                            <div class="language-option" data-value="ja-JP">日本語</div>
-                                            <div class="language-option" data-value="ko-KR">한국어</div>
-                                            <div class="language-option" data-value="fr-FR">Français</div>
-                                            <div class="language-option" data-value="de-DE">Deutsch</div>
-                                            <div class="language-option" data-value="es-ES">Español</div>
-                                            <div class="language-option" data-value="ru-RU">Русский</div>
+                                            <!-- 语言选项将通过JavaScript动态生成 -->
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
+                        
                         <div class="settings-group">
-                            <h3 class="group-title" id="settingsActionsTitle">设置操作</h3>
-                            <div class="settings-actions">
-                                <button class="action-btn export" id="exportSettingsBtn">
-                                    <i class="fas fa-download"></i>
-                                    <span id="exportSettingsText">导出设置</span>
-                                </button>
-                                <button class="action-btn import" id="importSettingsBtn">
-                                    <i class="fas fa-upload"></i>
-                                    <span id="importSettingsText">导入设置</span>
-                                </button>
-                                <button class="action-btn reset" id="resetSettingsBtn">
-                                    <i class="fas fa-redo"></i>
-                                    <span id="resetSettingsText">重置设置</span>
-                                </button>
-                                <input type="file" id="settingsFileInput" accept=".json" style="display: none;">
+                            <h3 class="group-title" id="behaviorTitle">行为设置</h3>
+                            <div class="option-row">
+                                <div class="option-info">
+                                    <div class="option-title" id="autoSaveTitle">自动保存</div>
+                                    <div class="option-desc" id="autoSaveDesc">自动保存名单和设置</div>
+                                </div>
+                                <div class="option-control">
+                                    <div class="radio-group" id="autoSaveGroup">
+                                        <div class="radio-option active" data-value="true">开启</div>
+                                        <div class="radio-option" data-value="false">关闭</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-
+                    
                     <!-- 外观设置 -->
                     <div class="tab-content" id="appearance-content">
                         <div class="settings-group">
@@ -1192,91 +1182,99 @@
                             <div class="option-row">
                                 <div class="option-info">
                                     <div class="option-title" id="themeModeTitle">主题模式</div>
-                                    <div class="option-desc" id="themeModeDesc">选择适合您环境的颜色主题</div>
+                                    <div class="option-desc" id="themeModeDesc">选择浅色或深色主题</div>
                                 </div>
                                 <div class="option-control">
                                     <div class="radio-group" id="themeGroup">
-                                        <div class="radio-option active" data-value="dark" id="darkThemeOption">深色</div>
-                                        <div class="radio-option" data-value="light" id="lightThemeOption">浅色</div>
-                                        <div class="radio-option" data-value="auto" id="autoThemeOption">自动</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="settings-group">
-                            <h3 class="group-title" id="materialTitle">材质效果</h3>
-                            <div class="option-row">
-                                <div class="option-info">
-                                    <div class="option-title" id="materialTypeTitle">材质类型</div>
-                                    <div class="option-desc" id="materialTypeDesc">选择界面元素的视觉材质效果</div>
-                                </div>
-                                <div class="option-control">
-                                    <div class="radio-group" id="materialGroup">
-                                        <div class="radio-option active" data-value="acrylic" id="acrylicOption">亚克力</div>
-                                        <div class="radio-option" data-value="frosted-glass" id="frostedGlassOption">毛玻璃</div>
-                                        <div class="radio-option" data-value="none" id="noMaterialOption">无材质</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 名单管理 -->
-                    <div class="tab-content" id="names-content">
-                        <div class="settings-group">
-                            <h3 class="group-title" id="nameManagementTitle">名单管理</h3>
-                            <div class="name-management">
-                                <div class="name-edit-area">
-                                    <input type="text" class="name-input" id="newNameInput" placeholder="输入新名字...">
-                                    <button class="add-name-btn" id="addNameBtn">
-                                        <span id="addNameBtnText">添加名字</span>
-                                    </button>
-                                </div>
-                                
-                                <div class="names-container">
-                                    <div class="names-list" id="namesList">
-                                        <!-- 可编辑的名单将在这里显示 -->
+                                        <div class="radio-option" data-value="light">浅色</div>
+                                        <div class="radio-option active" data-value="dark">深色</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="import-section">
-                            <button class="import-btn" id="importNamesBtn">
-                                <i class="fas fa-file-import"></i>
-                                <span id="importNamesBtnText">从文件导入名单</span>
-                            </button>
-                            <input type="file" id="namesFileInput" accept=".txt,.csv" style="display: none;">
-                        </div>
-                    </div>
-
-                    <!-- 关于 -->
-                    <div class="tab-content" id="about-content">
                         <div class="settings-group">
-                            <div style="padding: 25px; background: rgba(255, 255, 255, 0.05); border-radius: var(--radius-xl); backdrop-filter: blur(10px);">
-                                <!-- Logo 和版本信息 -->
-                                <div class="about-logo">
-                                    <img src="assets/logo.png" alt="量子点名" class="logo-img" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiByeD0iMTYiIGZpbGw9IiM2YzhmZmYiLz4KPHRleHQgeD0iMTAwIiB5PSIxMTAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiPueZvuW6pueUteWtkDwvdGV4dD4KPC9zdmc+'">
+                            <h3 class="group-title" id="materialTitle">材质效果</h3>
+                            <div class="option-row">
+                                <div class="option-info">
+                                    <div class="option-title" id="materialEffectTitle">界面材质</div>
+                                    <div class="option-desc" id="materialEffectDesc">选择界面材质效果</div>
                                 </div>
-                                <div class="version-info">
-                                    v2.1.2 - by mc_xinyu
-                                </div>
-                                
-                                <!-- 链接分类 -->
-                                <div class="links-section">
-                                    <h3 class="group-title" id="linksTitle">链接</h3>
-                                    <div class="links-grid">
-                                        <a href="https://space.bilibili.com/3546594301446265" target="_blank" class="link-card bilibili-link">
-                                            <i class="fab fa-bilibili link-icon"></i>
-                                            <div class="link-title" id="bilibiliHomeText">Bilibili 主页</div>
-                                        </a>
-                                        <a href="https://github.com/mc-xinyu" target="_blank" class="link-card github-link">
-                                            <i class="fab fa-github link-icon"></i>
-                                            <div class="link-title" id="githubPageText">Github 项目</div>
-                                        </a>
+                                <div class="option-control">
+                                    <div class="radio-group" id="materialGroup">
+                                        <div class="radio-option" data-value="none">无</div>
+                                        <div class="radio-option active" data-value="acrylic">亚克力</div>
+                                        <div class="radio-option" data-value="frosted-glass">毛玻璃</div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 名单管理 -->
+                    <div class="tab-content" id="names-content">
+                        <div class="settings-group">
+                            <h3 class="group-title" id="manageNamesTitle">名单管理</h3>
+                            <div class="option-row">
+                                <div class="option-info">
+                                    <div class="option-title" id="addNameTitle">添加姓名</div>
+                                    <div class="option-desc" id="addNameDesc">向名单中添加新姓名</div>
+                                </div>
+                                <div class="option-control">
+                                    <div class="name-edit-area">
+                                        <input type="text" class="name-input" id="nameInput" placeholder="输入姓名">
+                                        <button class="add-name-btn" id="addNameBtn">添加</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="names-container">
+                            <div class="names-list" id="namesList">
+                                <!-- 名单列表将通过JavaScript动态生成 -->
+                            </div>
+                        </div>
+                        
+                        <div class="settings-actions">
+                            <button class="action-btn export" id="exportNamesBtn">
+                                <i class="fas fa-download"></i>
+                                <span id="exportNamesText">导出名单</span>
+                            </button>
+                            <button class="action-btn import" id="importNamesBtn">
+                                <i class="fas fa-upload"></i>
+                                <span id="importNamesText">导入名单</span>
+                            </button>
+                            <button class="action-btn reset" id="resetNamesBtn">
+                                <i class="fas fa-trash-alt"></i>
+                                <span id="resetNamesText">重置名单</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- 关于页面 -->
+                    <div class="tab-content" id="about-content">
+                        <div class="about-logo">
+                            <img src="assets/logo.png" alt="量子点名" class="logo-img">
+                        </div>
+                        
+                        <div class="version-info">
+                            <h3>量子点名系统</h3>
+                            <p>版本 2.3.2</p>
+                        </div>
+                        
+                        <div class="links-section">
+                            <h3 class="group-title">相关链接</h3>
+                            <div class="links-grid">
+                                <a href="https://space.bilibili.com/3546594301446265" class="link-card bilibili-link">
+                                    <i class="fab fa-bilibili link-icon"></i>
+                                    <div class="link-title">B站主页</div>
+                                    <div class="link-desc">关注我的B站账号</div>
+                                </a>
+                                <a href="https://github.com/KangXinyu13/Quantum-Roll-Call" class="link-card github-link">
+                                    <i class="fab fa-github link-icon"></i>
+                                    <div class="link-title">GitHub</div>
+                                    <div class="link-desc">查看项目源代码</div>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -1284,1190 +1282,1050 @@
             </div>
             
             <!-- 关闭按钮 -->
-            <button class="settings-close" id="closeSettings">
+            <div class="settings-close" id="settingsClose">
                 <i class="fas fa-times"></i>
-            </button>
+            </div>
         </div>
     </div>
 
     <script>
-        // 在这里修改名单 - 用逗号或换行分隔名字
-        const defaultNames = ["张三", "李四", "王五", "赵六", "钱七"];
-        
-        // 语言资源
-        const languageResources = {
+        // 语言配置
+        const languages = {
             'zh-CN': {
-                'appTitle': '量子点名',
-                'statusLoaded': '名单已加载',
-                'statusNoNames': '名单为空，请添加名字',
-                'selectedText': '被选中的是：',
-                'waitingText': '等待点名',
-                'startRollCall': '开始点名',
-                'stopRollCall': '暂停点名',
-                'reloadNames': '重新加载',
-                'generalSettings': '通用设置',
-                'appearanceSettings': '外观设置',
-                'nameManagement': '名单管理',
-                'aboutSystem': '关于系统',
-                'languageTitle': '语言设置',
-                'languageSetting': '界面语言',
-                'languageDesc': '选择界面显示语言',
-                'settingsActions': '设置操作',
-                'exportSettings': '导出设置',
-                'importSettings': '导入设置',
-                'resetSettings': '重置设置',
-                'colorScheme': '颜色方案',
-                'themeTitle': '主题设置',
-                'themeMode': '主题模式',
-                'themeDesc': '选择适合您环境的颜色主题',
-                'dark': '深色',
-                'light': '浅色',
-                'auto': '自动',
-                'uiMaterial': '界面材质',
-                'materialTitle': '材质效果',
-                'materialType': '材质类型',
-                'materialDesc': '选择界面元素的视觉材质效果',
-                'noMaterial': '无材质',
-                'acrylic': '亚克力',
-                'frostedGlass': '毛玻璃',
-                'addName': '添加名字',
-                'importNames': '从文件导入名单',
-                'edit': '编辑',
-                'delete': '删除',
-                'save': '保存',
-                'cancel': '取消',
-                'aboutTitle': '关于量子点名系统',
-                'links': '链接',
-                'bilibiliHome': 'Bilibili 主页',
-                'githubPage': 'Github 项目',
-                'confirmDelete': '确定要删除 "{name}" 吗？',
-                'confirmReset': '确定要重置所有设置吗？这将清除所有自定义设置和名单，此操作不可撤销！',
-                'confirmImport': '导入设置将覆盖当前所有设置，确定要继续吗？',
-                'exportSuccess': '设置已成功导出！',
-                'importSuccess': '设置已成功导入！页面将刷新以应用新设置。',
-                'resetSuccess': '所有设置已重置！页面将刷新以应用默认设置。',
-                'importFailed': '导入失败：文件格式不正确',
-                'namesImportSuccess': '成功导入 {count} 个名字',
-                'namesImportFailed': '文件为空或格式不正确',
-                'nameAdded': '成功添加 {name}，当前共有 {count} 个名字',
-                'namesReloaded': '已重新加载 {count} 个名字',
-                'namesImported': '已从文件导入 {count} 个名字'
+                name: '简体中文(中国大陆)',
+                dir: 'ltr',
+                strings: {
+                    appTitle: '量子点名',
+                    statusReady: '名单已加载',
+                    statusRolling: '点名中...',
+                    selectedText: '被选中的是：',
+                    waitingName: '等待点名',
+                    startRollCall: '开始点名',
+                    stopRollCall: '停止点名',
+                    reloadNames: '重新加载',
+                    navGeneral: '通用',
+                    navAppearance: '外观',
+                    navNames: '名单',
+                    navAbout: '关于',
+                    currentTabTitle: '通用设置',
+                    languageTitle: '语言设置',
+                    languageSettingTitle: '界面语言',
+                    languageSettingDesc: '选择界面显示语言',
+                    behaviorTitle: '行为设置',
+                    autoSaveTitle: '自动保存',
+                    autoSaveDesc: '自动保存名单和设置',
+                    themeTitle: '主题设置',
+                    themeModeTitle: '主题模式',
+                    themeModeDesc: '选择浅色或深色主题',
+                    materialTitle: '材质效果',
+                    materialEffectTitle: '界面材质',
+                    materialEffectDesc: '选择界面材质效果',
+                    manageNamesTitle: '名单管理',
+                    addNameTitle: '添加姓名',
+                    addNameDesc: '向名单中添加新姓名',
+                    exportNamesText: '导出名单',
+                    importNamesText: '导入名单',
+                    resetNamesText: '重置名单',
+                    saveText: '保存',
+                    cancelText: '取消',
+                    editText: '编辑',
+                    deleteText: '删除',
+                    confirmReset: '确定要重置名单吗？这将删除所有已添加的姓名。'
+                }
             },
             'zh-TW': {
-                'appTitle': '量子點名',
-                'statusLoaded': '名單已加載',
-                'statusNoNames': '名單為空，請添加名字',
-                'selectedText': '被選中的是：',
-                'waitingText': '等待點名',
-                'startRollCall': '開始點名',
-                'stopRollCall': '暫停點名',
-                'reloadNames': '重新加載',
-                'generalSettings': '通用設置',
-                'appearanceSettings': '外觀設置',
-                'nameManagement': '名單管理',
-                'aboutSystem': '關於系統',
-                'languageTitle': '語言設置',
-                'languageSetting': '界面語言',
-                'languageDesc': '選擇界面顯示語言',
-                'settingsActions': '設置操作',
-                'exportSettings': '導出設置',
-                'importSettings': '導入設置',
-                'resetSettings': '重置設置',
-                'colorScheme': '顏色方案',
-                'themeTitle': '主題設置',
-                'themeMode': '主題模式',
-                'themeDesc': '選擇適合您環境的顏色主題',
-                'dark': '深色',
-                'light': '淺色',
-                'auto': '自動',
-                'uiMaterial': '界面材質',
-                'materialTitle': '材質效果',
-                'materialType': '材質類型',
-                'materialDesc': '選擇界面元素的視覺材質效果',
-                'noMaterial': '無材質',
-                'acrylic': '亞克力',
-                'frostedGlass': '毛玻璃',
-                'addName': '添加名字',
-                'importNames': '從文件導入名單',
-                'edit': '編輯',
-                'delete': '刪除',
-                'save': '保存',
-                'cancel': '取消',
-                'aboutTitle': '關於量子點名系統',
-                'links': '鏈接',
-                'bilibiliHome': 'Bilibili 主頁',
-                'githubPage': 'Github 項目',
-                'confirmDelete': '確定要刪除 "{name}" 嗎？',
-                'confirmReset': '確定要重置所有設置嗎？這將清除所有自定義設置和名單，此操作不可撤銷！',
-                'confirmImport': '導入設置將覆蓋當前所有設置，確定要繼續嗎？',
-                'exportSuccess': '設置已成功導出！',
-                'importSuccess': '設置已成功導入！頁面將刷新以應用新設置。',
-                'resetSuccess': '所有設置已重置！頁面將刷新以應用默認設置。',
-                'importFailed': '導入失敗：文件格式不正確',
-                'namesImportSuccess': '成功導入 {count} 個名字',
-                'namesImportFailed': '文件為空或格式不正確',
-                'nameAdded': '成功添加 {name}，當前共有 {count} 個名字',
-                'namesReloaded': '已重新加載 {count} 個名字',
-                'namesImported': '已從文件導入 {count} 個名字'
+                name: '繁體中文(台湾)',
+                dir: 'ltr',
+                strings: {
+                    appTitle: '量子點名',
+                    statusReady: '名單已加載',
+                    statusRolling: '點名中...',
+                    selectedText: '被選中的是：',
+                    waitingName: '等待點名',
+                    startRollCall: '開始點名',
+                    stopRollCall: '停止點名',
+                    reloadNames: '重新加載',
+                    navGeneral: '通用',
+                    navAppearance: '外觀',
+                    navNames: '名單',
+                    navAbout: '關於',
+                    currentTabTitle: '通用設置',
+                    languageTitle: '語言設置',
+                    languageSettingTitle: '界面語言',
+                    languageSettingDesc: '選擇界面顯示語言',
+                    behaviorTitle: '行為設置',
+                    autoSaveTitle: '自動保存',
+                    autoSaveDesc: '自動保存名單和設置',
+                    themeTitle: '主題設置',
+                    themeModeTitle: '主題模式',
+                    themeModeDesc: '選擇淺色或深色主題',
+                    materialTitle: '材質效果',
+                    materialEffectTitle: '界面材質',
+                    materialEffectDesc: '選擇界面材質效果',
+                    manageNamesTitle: '名單管理',
+                    addNameTitle: '添加姓名',
+                    addNameDesc: '向名單中添加新姓名',
+                    exportNamesText: '導出名單',
+                    importNamesText: '導入名單',
+                    resetNamesText: '重置名單',
+                    saveText: '保存',
+                    cancelText: '取消',
+                    editText: '編輯',
+                    deleteText: '刪除',
+                    confirmReset: '確定要重置名單嗎？這將刪除所有已添加的姓名。'
+                }
             },
             'en-US': {
-                'appTitle': 'Quantum Roll Call',
-                'statusLoaded': 'Names loaded successfully',
-                'statusNoNames': 'Name list is empty, please add names',
-                'selectedText': 'Selected:',
-                'waitingText': 'Waiting for roll call',
-                'startRollCall': 'Start Roll Call',
-                'stopRollCall': 'Stop Roll Call',
-                'reloadNames': 'Reload Names',
-                'generalSettings': 'General Settings',
-                'appearanceSettings': 'Appearance Settings',
-                'nameManagement': 'Name Management',
-                'aboutSystem': 'About System',
-                'languageTitle': 'Language Settings',
-                'languageSetting': 'Interface Language',
-                'languageDesc': 'Select interface display language',
-                'settingsActions': 'Settings Actions',
-                'exportSettings': 'Export Settings',
-                'importSettings': 'Import Settings',
-                'resetSettings': 'Reset Settings',
-                'colorScheme': 'Color Scheme',
-                'themeTitle': 'Theme Settings',
-                'themeMode': 'Theme Mode',
-                'themeDesc': 'Select a color theme suitable for your environment',
-                'dark': 'Dark',
-                'light': 'Light',
-                'auto': 'Auto',
-                'uiMaterial': 'UI Material',
-                'materialTitle': 'Material Effect',
-                'materialType': 'Material Type',
-                'materialDesc': 'Select visual material effect for interface elements',
-                'noMaterial': 'No Material',
-                'acrylic': 'Acrylic',
-                'frostedGlass': 'Frosted Glass',
-                'addName': 'Add Name',
-                'importNames': 'Import Names from File',
-                'edit': 'Edit',
-                'delete': 'Delete',
-                'save': 'Save',
-                'cancel': 'Cancel',
-                'aboutTitle': 'About Quantum Roll Call System',
-                'links': 'Links',
-                'bilibiliHome': 'Bilibili Home',
-                'githubPage': 'Github Project',
-                'confirmDelete': 'Are you sure you want to delete "{name}"?',
-                'confirmReset': 'Are you sure you want to reset all settings? This will clear all custom settings and name lists, this operation cannot be undone!',
-                'confirmImport': 'Importing settings will overwrite all current settings, are you sure you want to continue?',
-                'exportSuccess': 'Settings exported successfully!',
-                'importSuccess': 'Settings imported successfully! The page will refresh to apply the new settings.',
-                'resetSuccess': 'All settings have been reset! The page will refresh to apply default settings.',
-                'importFailed': 'Import failed: file format is incorrect',
-                'namesImportSuccess': 'Successfully imported {count} names',
-                'namesImportFailed': 'File is empty or format is incorrect',
-                'nameAdded': 'Successfully added {name}, currently have {count} names in total',
-                'namesReloaded': 'Reloaded {count} names',
-                'namesImported': 'Imported {count} names from file'
+                name: 'English(US)',
+                dir: 'ltr',
+                strings: {
+                    appTitle: 'Quantum Roll Call',
+                    statusReady: 'List loaded',
+                    statusRolling: 'Rolling...',
+                    selectedText: 'Selected:',
+                    waitingName: 'Waiting for roll call',
+                    startRollCall: 'Start Roll Call',
+                    stopRollCall: 'Stop Roll Call',
+                    reloadNames: 'Reload Names',
+                    navGeneral: 'General',
+                    navAppearance: 'Appearance',
+                    navNames: 'Names',
+                    navAbout: 'About',
+                    currentTabTitle: 'General Settings',
+                    languageTitle: 'Language Settings',
+                    languageSettingTitle: 'Interface Language',
+                    languageSettingDesc: 'Select display language',
+                    behaviorTitle: 'Behavior Settings',
+                    autoSaveTitle: 'Auto Save',
+                    autoSaveDesc: 'Automatically save list and settings',
+                    themeTitle: 'Theme Settings',
+                    themeModeTitle: 'Theme Mode',
+                    themeModeDesc: 'Select light or dark theme',
+                    materialTitle: 'Material Effects',
+                    materialEffectTitle: 'Interface Material',
+                    materialEffectDesc: 'Select interface material effect',
+                    manageNamesTitle: 'Name Management',
+                    addNameTitle: 'Add Name',
+                    addNameDesc: 'Add new name to the list',
+                    exportNamesText: 'Export Names',
+                    importNamesText: 'Import Names',
+                    resetNamesText: 'Reset Names',
+                    saveText: 'Save',
+                    cancelText: 'Cancel',
+                    editText: 'Edit',
+                    deleteText: 'Delete',
+                    confirmReset: 'Are you sure you want to reset the name list? This will delete all added names.'
+                }
             },
             'ja-JP': {
-                'appTitle': '量子点名',
-                'statusLoaded': 'リストが読み込まれました',
-                'statusNoNames': 'リストが空です。名前を追加してください',
-                'selectedText': '選ばれたのは：',
-                'waitingText': '点名待機中',
-                'startRollCall': '点名開始',
-                'stopRollCall': '点名停止',
-                'reloadNames': 'リスト再読み込み',
-                'generalSettings': '一般設定',
-                'appearanceSettings': '外観設定',
-                'nameManagement': '名簿管理',
-                'aboutSystem': 'システムについて',
-                'languageTitle': '言語設定',
-                'languageSetting': 'インターフェース言語',
-                'languageDesc': '表示言語を選択',
-                'settingsActions': '設定操作',
-                'exportSettings': '設定をエクスポート',
-                'importSettings': '設定をインポート',
-                'resetSettings': '設定をリセット',
-                'colorScheme': 'カラースキーム',
-                'themeTitle': 'テーマ設定',
-                'themeMode': 'テーマモード',
-                'themeDesc': '環境に適したカラーテーマを選択',
-                'dark': 'ダーク',
-                'light': 'ライト',
-                'auto': '自動',
-                'uiMaterial': 'UIマテリアル',
-                'materialTitle': 'マテリアル効果',
-                'materialType': 'マテリアルタイプ',
-                'materialDesc': 'インターフェース要素の視覚的マテリアル効果を選択',
-                'noMaterial': 'マテリアルなし',
-                'acrylic': 'アクリル',
-                'frostedGlass': 'すりガラス',
-                'addName': '名前を追加',
-                'importNames': 'ファイルから名簿をインポート',
-                'edit': '編集',
-                'delete': '削除',
-                'save': '保存',
-                'cancel': 'キャンセル',
-                'aboutTitle': '量子点名システムについて',
-                'links': 'リンク',
-                'bilibiliHome': 'Bilibili ホーム',
-                'githubPage': 'Github プロジェクト',
-                'confirmDelete': '「{name}」を削除してもよろしいですか？',
-                'confirmReset': 'すべての設定をリセットしてもよろしいですか？これによりすべてのカスタム設定と名簿がクリアされます。この操作は元に戻せません！',
-                'confirmImport': '設定をインポートすると現在のすべての設定が上書きされます。続行してもよろしいですか？',
-                'exportSuccess': '設定が正常にエクスポートされました！',
-                'importSuccess': '設定が正常にインポートされました！新しい設定を適用するためにページがリフレッシュされます。',
-                'resetSuccess': 'すべての設定がリセットされました！デフォルト設定を適用するためにページがリフレッシュされます。',
-                'importFailed': 'インポート失敗：ファイル形式が正しくありません',
-                'namesImportSuccess': '{count}個の名前を正常にインポートしました',
-                'namesImportFailed': 'ファイルが空または形式が正しくありません',
-                'nameAdded': '{name}を正常に追加しました。現在{count}個の名前があります',
-                'namesReloaded': '{count}個の名前を再読み込みしました',
-                'namesImported': 'ファイルから{count}個の名前をインポートしました'
+                name: '日本語(日本)',
+                dir: 'ltr',
+                strings: {
+                    appTitle: '量子点名',
+                    statusReady: 'リストが読み込まれました',
+                    statusRolling: '点名中...',
+                    selectedText: '選ばれたのは：',
+                    waitingName: '点名待ち',
+                    startRollCall: '点名開始',
+                    stopRollCall: '点名停止',
+                    reloadNames: 'リスト再読み込み',
+                    navGeneral: '一般',
+                    navAppearance: '外観',
+                    navNames: '名簿',
+                    navAbout: '情報',
+                    currentTabTitle: '一般設定',
+                    languageTitle: '言語設定',
+                    languageSettingTitle: 'インターフェース言語',
+                    languageSettingDesc: '表示言語を選択',
+                    behaviorTitle: '動作設定',
+                    autoSaveTitle: '自動保存',
+                    autoSaveDesc: 'リストと設定を自動保存',
+                    themeTitle: 'テーマ設定',
+                    themeModeTitle: 'テーマモード',
+                    themeModeDesc: 'ライトまたはダークテーマを選択',
+                    materialTitle: 'マテリアル効果',
+                    materialEffectTitle: 'インターフェースマテリアル',
+                    materialEffectDesc: 'インターフェースのマテリアル効果を選択',
+                    manageNamesTitle: '名簿管理',
+                    addNameTitle: '名前追加',
+                    addNameDesc: 'リストに新しい名前を追加',
+                    exportNamesText: '名簿エクスポート',
+                    importNamesText: '名簿インポート',
+                    resetNamesText: '名簿リセット',
+                    saveText: '保存',
+                    cancelText: 'キャンセル',
+                    editText: '編集',
+                    deleteText: '削除',
+                    confirmReset: '名簿をリセットしてもよろしいですか？追加されたすべての名前が削除されます。'
+                }
             },
             'ko-KR': {
-                'appTitle': '양자 출석',
-                'statusLoaded': '명단이 로드되었습니다',
-                'statusNoNames': '명단이 비어 있습니다. 이름을 추가해 주세요',
-                'selectedText': '선택된 사람:',
-                'waitingText': '출석 부사 대기 중',
-                'startRollCall': '출석 부사 시작',
-                'stopRollCall': '출석 부사 중지',
-                'reloadNames': '명단 다시 로드',
-                'generalSettings': '일반 설정',
-                'appearanceSettings': '외관 설정',
-                'nameManagement': '명단 관리',
-                'aboutSystem': '시스템 정보',
-                'languageTitle': '언어 설정',
-                'languageSetting': '인터페이스 언어',
-                'languageDesc': '표시 언어 선택',
-                'settingsActions': '설정 작업',
-                'exportSettings': '설정 내보내기',
-                'importSettings': '설정 가져오기',
-                'resetSettings': '설정 초기화',
-                'colorScheme': '색상 구성',
-                'themeTitle': '테마 설정',
-                'themeMode': '테마 모드',
-                'themeDesc': '환경에 맞는 색상 테마 선택',
-                'dark': '다크',
-                'light': '라이트',
-                'auto': '자동',
-                'uiMaterial': 'UI 재질',
-                'materialTitle': '재질 효과',
-                'materialType': '재질 유형',
-                'materialDesc': '인터페이스 요소의 시각적 재질 효과 선택',
-                'noMaterial': '재질 없음',
-                'acrylic': '아크릴',
-                'frostedGlass': '프로스트 글래스',
-                'addName': '이름 추가',
-                'importNames': '파일에서 명단 가져오기',
-                'edit': '편집',
-                'delete': '삭제',
-                'save': '저장',
-                'cancel': '취소',
-                'aboutTitle': '양자 출석 시스템 정보',
-                'links': '링크',
-                'bilibiliHome': 'Bilibili 홈',
-                'githubPage': 'Github 프로젝트',
-                'confirmDelete': '"{name}"을(를) 삭제하시겠습니까?',
-                'confirmReset': '모든 설정을 초기화하시겠습니까? 이 작업은 모든 사용자 정의 설정과 명단을 지우며, 이 작업은 취소할 수 없습니다!',
-                'confirmImport': '설정을 가져오면 현재 모든 설정이 덮어쓰여집니다. 계속하시겠습니까?',
-                'exportSuccess': '설정이 성공적으로 내보내졌습니다!',
-                'importSuccess': '설정이 성공적으로 가져와졌습니다! 새 설정을 적용하기 위해 페이지가 새로고침됩니다.',
-                'resetSuccess': '모든 설정이 초기화되었습니다! 기본 설정을 적용하기 위해 페이지가 새로고침됩니다.',
-                'importFailed': '가져오기 실패: 파일 형식이 올바르지 않습니다',
-                'namesImportSuccess': '{count}개의 이름을 성공적으로 가져왔습니다',
-                'namesImportFailed': '파일이 비어 있거나 형식이 올바르지 않습니다',
-                'nameAdded': '{name}을(를) 성공적으로 추가했습니다. 현재 {count}개의 이름이 있습니다',
-                'namesReloaded': '{count}개의 이름을 다시 로드했습니다',
-                'namesImported': '파일에서 {count}개의 이름을 가져왔습니다'
-            },
-            'fr-FR': {
-                'appTitle': 'Appel Quantique',
-                'statusLoaded': 'Liste chargée avec succès',
-                'statusNoNames': 'La liste des noms est vide, veuillez ajouter des noms',
-                'selectedText': 'Sélectionné :',
-                'waitingText': 'En attente d\'appel',
-                'startRollCall': 'Commencer l\'appel',
-                'stopRollCall': 'Arrêter l\'appel',
-                'reloadNames': 'Recharger les noms',
-                'generalSettings': 'Paramètres généraux',
-                'appearanceSettings': 'Paramètres d\'apparence',
-                'nameManagement': 'Gestion des noms',
-                'aboutSystem': 'À propos du système',
-                'languageTitle': 'Paramètres de langue',
-                'languageSetting': 'Langue de l\'interface',
-                'languageDesc': 'Sélectionnez la langue d\'affichage',
-                'settingsActions': 'Actions des paramètres',
-                'exportSettings': 'Exporter les paramètres',
-                'importSettings': 'Importer les paramètres',
-                'resetSettings': 'Réinitialiser les paramètres',
-                'colorScheme': 'Schéma de couleurs',
-                'themeTitle': 'Paramètres du thème',
-                'themeMode': 'Mode thème',
-                'themeDesc': 'Sélectionnez un thème de couleur adapté à votre environnement',
-                'dark': 'Sombre',
-                'light': 'Clair',
-                'auto': 'Auto',
-                'uiMaterial': 'Matériau de l\'interface',
-                'materialTitle': 'Effet matériau',
-                'materialType': 'Type de matériau',
-                'materialDesc': 'Sélectionnez l\'effet visuel du matériau pour les éléments de l\'interface',
-                'noMaterial': 'Aucun matériau',
-                'acrylic': 'Acrylique',
-                'frostedGlass': 'Verre dépoli',
-                'addName': 'Ajouter un nom',
-                'importNames': 'Importer les noms depuis un fichier',
-                'edit': 'Modifier',
-                'delete': 'Supprimer',
-                'save': 'Enregistrer',
-                'cancel': 'Annuler',
-                'aboutTitle': 'À propos du système d\'appel quantique',
-                'links': 'Liens',
-                'bilibiliHome': 'Page d\'accueil Bilibili',
-                'githubPage': 'Projet Github',
-                'confirmDelete': 'Êtes-vous sûr de vouloir supprimer "{name}" ?',
-                'confirmReset': 'Êtes-vous sûr de vouloir réinitialiser tous les paramètres ? Cela effacera tous les paramètres personnalisés et les listes de noms, cette opération est irréversible !',
-                'confirmImport': 'L\'importation des paramètres écrasera tous les paramètres actuels, êtes-vous sûr de vouloir continuer ?',
-                'exportSuccess': 'Paramètres exportés avec succès !',
-                'importSuccess': 'Paramètres importés avec succès ! La page va se rafraîchir pour appliquer les nouveaux paramètres.',
-                'resetSuccess': 'Tous les paramètres ont été réinitialisés ! La page va se rafraîchir pour appliquer les paramètres par défaut.',
-                'importFailed': 'Échec de l\'importation : format de fichier incorrect',
-                'namesImportSuccess': '{count} noms importés avec succès',
-                'namesImportFailed': 'Le fichier est vide ou le format est incorrect',
-                'nameAdded': '{name} ajouté avec succès, {count} noms au total',
-                'namesReloaded': '{count} noms rechargés',
-                'namesImported': '{count} noms importés depuis le fichier'
-            },
-            'de-DE': {
-                'appTitle': 'Quanten-Namensaufruf',
-                'statusLoaded': 'Namensliste erfolgreich geladen',
-                'statusNoNames': 'Namensliste ist leer, bitte Namen hinzufügen',
-                'selectedText': 'Ausgewählt:',
-                'waitingText': 'Warte auf Namensaufruf',
-                'startRollCall': 'Namensaufruf starten',
-                'stopRollCall': 'Namensaufruf stoppen',
-                'reloadNames': 'Namen neu laden',
-                'generalSettings': 'Allgemeine Einstellungen',
-                'appearanceSettings': 'Darstellungseinstellungen',
-                'nameManagement': 'Namensverwaltung',
-                'aboutSystem': 'Über das System',
-                'languageTitle': 'Spracheinstellungen',
-                'languageSetting': 'Oberflächensprache',
-                'languageDesc': 'Anzeigesprache auswählen',
-                'settingsActions': 'Einstellungsaktionen',
-                'exportSettings': 'Einstellungen exportieren',
-                'importSettings': 'Einstellungen importieren',
-                'resetSettings': 'Einstellungen zurücksetzen',
-                'colorScheme': 'Farbschema',
-                'themeTitle': 'Theme-Einstellungen',
-                'themeMode': 'Themenmodus',
-                'themeDesc': 'Wählen Sie ein für Ihre Umgebung geeignetes Farbthema aus',
-                'dark': 'Dunkel',
-                'light': 'Hell',
-                'auto': 'Automatisch',
-                'uiMaterial': 'UI-Material',
-                'materialTitle': 'Materialeffekt',
-                'materialType': 'Materialtyp',
-                'materialDesc': 'Wählen Sie den visuellen Materialeffekt für Oberflächenelemente aus',
-                'noMaterial': 'Kein Material',
-                'acrylic': 'Acryl',
-                'frostedGlass': 'Milchglas',
-                'addName': 'Namen hinzufügen',
-                'importNames': 'Namen aus Datei importieren',
-                'edit': 'Bearbeiten',
-                'delete': 'Löschen',
-                'save': 'Speichern',
-                'cancel': 'Abbrechen',
-                'aboutTitle': 'Über das Quanten-Namensaufrufsystem',
-                'links': 'Links',
-                'bilibiliHome': 'Bilibili Startseite',
-                'githubPage': 'Github Projekt',
-                'confirmDelete': 'Sind Sie sicher, dass Sie "{name}" löschen möchten?',
-                'confirmReset': 'Sind Sie sicher, dass Sie alle Einstellungen zurücksetzen möchten? Dadurch werden alle benutzerdefinierten Einstellungen und Namenslisten gelöscht. Dieser Vorgang kann nicht rückgängig gemacht werden!',
-                'confirmImport': 'Das Importieren von Einstellungen überschreibt alle aktuellen Einstellungen. Sind Sie sicher, dass Sie fortfahren möchten?',
-                'exportSuccess': 'Einstellungen erfolgreich exportiert!',
-                'importSuccess': 'Einstellungen erfolgreich importiert! Die Seite wird aktualisiert, um die neuen Einstellungen zu übernehmen.',
-                'resetSuccess': 'Alle Einstellungen wurden zurückgesetzt! Die Seite wird aktualisiert, um die Standardeinstellungen zu übernehmen.',
-                'importFailed': 'Import fehlgeschlagen: Dateiformat ist falsch',
-                'namesImportSuccess': 'Erfolgreich {count} Namen importiert',
-                'namesImportFailed': 'Datei ist leer oder Format ist falsch',
-                'nameAdded': '{name} erfolgreich hinzugefügt, insgesamt {count} Namen',
-                'namesReloaded': '{count} Namen neu geladen',
-                'namesImported': '{count} Namen aus Datei importiert'
-            },
-            'es-ES': {
-                'appTitle': 'Llamada Cuántica',
-                'statusLoaded': 'Lista de nombres cargada exitosamente',
-                'statusNoNames': 'La lista de nombres está vacía, por favor agregue nombres',
-                'selectedText': 'Seleccionado:',
-                'waitingText': 'Esperando llamada',
-                'startRollCall': 'Comenzar llamada',
-                'stopRollCall': 'Detener llamada',
-                'reloadNames': 'Recargar nombres',
-                'generalSettings': 'Configuración general',
-                'appearanceSettings': 'Configuración de apariencia',
-                'nameManagement': 'Gestión de nombres',
-                'aboutSystem': 'Acerca del sistema',
-                'languageTitle': 'Configuración de idioma',
-                'languageSetting': 'Idioma de la interfaz',
-                'languageDesc': 'Seleccione el idioma de visualización',
-                'settingsActions': 'Acciones de configuración',
-                'exportSettings': 'Exportar configuración',
-                'importSettings': 'Importar configuración',
-                'resetSettings': 'Restablecer configuración',
-                'colorScheme': 'Esquema de color',
-                'themeTitle': 'Configuración del tema',
-                'themeMode': 'Modo de tema',
-                'themeDesc': 'Seleccione un tema de color adecuado para su entorno',
-                'dark': 'Oscuro',
-                'light': 'Claro',
-                'auto': 'Automático',
-                'uiMaterial': 'Material de la interfaz',
-                'materialTitle': 'Efecto de material',
-                'materialType': 'Tipo de material',
-                'materialDesc': 'Seleccione el efecto visual del material para los elementos de la interfaz',
-                'noMaterial': 'Sin material',
-                'acrylic': 'Acrílico',
-                'frostedGlass': 'Vidrio esmerilado',
-                'addName': 'Agregar nombre',
-                'importNames': 'Importar nombres desde archivo',
-                'edit': 'Editar',
-                'delete': 'Eliminar',
-                'save': 'Guardar',
-                'cancel': 'Cancelar',
-                'aboutTitle': 'Acerca del sistema de llamada cuántica',
-                'links': 'Enlaces',
-                'bilibiliHome': 'Página principal de Bilibili',
-                'githubPage': 'Proyecto de Github',
-                'confirmDelete': '¿Está seguro de que desea eliminar "{name}"?',
-                'confirmReset': '¿Está seguro de que desea restablecer toda la configuración? Esto borrará toda la configuración personalizada y las listas de nombres. ¡Esta operación no se puede deshacer!',
-                'confirmImport': 'Importar la configuración sobrescribirá toda la configuración actual, ¿está seguro de que desea continuar?',
-                'exportSuccess': '¡Configuración exportada exitosamente!',
-                'importSuccess': '¡Configuración importada exitosamente! La página se actualizará para aplicar la nueva configuración.',
-                'resetSuccess': '¡Toda la configuración ha sido restablecida! La página se actualizará para aplicar la configuración predeterminada.',
-                'importFailed': 'Error de importación: formato de archivo incorrecto',
-                'namesImportSuccess': '{count} nombres importados exitosamente',
-                'namesImportFailed': 'El archivo está vacío o el formato es incorrecto',
-                'nameAdded': '{name} agregado exitosamente, actualmente hay {count} nombres en total',
-                'namesReloaded': '{count} nombres recargados',
-                'namesImported': '{count} nombres importados desde el archivo'
+                name: '한국어(대한민국)',
+                dir: 'ltr',
+                strings: {
+                    appTitle: '양자 출석',
+                    statusReady: '명단 로드됨',
+                    statusRolling: '출석 부르는 중...',
+                    selectedText: '선택된 사람:',
+                    waitingName: '출석 부름 대기 중',
+                    startRollCall: '출석 부르기 시작',
+                    stopRollCall: '출석 부르기 중지',
+                    reloadNames: '명단 다시 로드',
+                    navGeneral: '일반',
+                    navAppearance: '외관',
+                    navNames: '명단',
+                    navAbout: '정보',
+                    currentTabTitle: '일반 설정',
+                    languageTitle: '언어 설정',
+                    languageSettingTitle: '인터페이스 언어',
+                    languageSettingDesc: '표시 언어 선택',
+                    behaviorTitle: '동작 설정',
+                    autoSaveTitle: '자동 저장',
+                    autoSaveDesc: '명단과 설정 자동 저장',
+                    themeTitle: '테마 설정',
+                    themeModeTitle: '테마 모드',
+                    themeModeDesc: '라이트 또는 다크 테마 선택',
+                    materialTitle: '재질 효과',
+                    materialEffectTitle: '인터페이스 재질',
+                    materialEffectDesc: '인터페이스 재질 효과 선택',
+                    manageNamesTitle: '명단 관리',
+                    addNameTitle: '이름 추가',
+                    addNameDesc: '명단에 새 이름 추가',
+                    exportNamesText: '명단 내보내기',
+                    importNamesText: '명단 가져오기',
+                    resetNamesText: '명단 초기화',
+                    saveText: '저장',
+                    cancelText: '취소',
+                    editText: '편집',
+                    deleteText: '삭제',
+                    confirmReset: '명단을 초기화하시겠습니까? 추가된 모든 이름이 삭제됩니다.'
+                }
             },
             'ru-RU': {
-                'appTitle': 'Квантовый Оклик',
-                'statusLoaded': 'Список имен успешно загружен',
-                'statusNoNames': 'Список имен пуст, пожалуйста, добавьте имена',
-                'selectedText': 'Выбран:',
-                'waitingText': 'Ожидание оклика',
-                'startRollCall': 'Начать оклик',
-                'stopRollCall': 'Остановить оклик',
-                'reloadNames': 'Перезагрузить имена',
-                'generalSettings': 'Общие настройки',
-                'appearanceSettings': 'Настройки внешнего вида',
-                'nameManagement': 'Управление именами',
-                'aboutSystem': 'О системе',
-                'languageTitle': 'Настройки языка',
-                'languageSetting': 'Язык интерфейса',
-                'languageDesc': 'Выберите язык отображения',
-                'settingsActions': 'Действия с настройками',
-                'exportSettings': 'Экспорт настроек',
-                'importSettings': 'Импорт настроек',
-                'resetSettings': 'Сброс настроек',
-                'colorScheme': 'Цветовая схема',
-                'themeTitle': 'Настройки темы',
-                'themeMode': 'Режим темы',
-                'themeDesc': 'Выберите цветовую тему, подходящую для вашего окружения',
-                'dark': 'Темная',
-                'light': 'Светлая',
-                'auto': 'Авто',
-                'uiMaterial': 'Материал интерфейса',
-                'materialTitle': 'Эффект материала',
-                'materialType': 'Тип материала',
-                'materialDesc': 'Выберите визуальный эффект материала для элементов интерфейса',
-                'noMaterial': 'Без материала',
-                'acrylic': 'Акрил',
-                'frostedGlass': 'Матовое стекло',
-                'addName': 'Добавить имя',
-                'importNames': 'Импорт имен из файла',
-                'edit': 'Редактировать',
-                'delete': 'Удалить',
-                'save': 'Сохранить',
-                'cancel': 'Отмена',
-                'aboutTitle': 'О системе квантового оклика',
-                'links': 'Ссылки',
-                'bilibiliHome': 'Домашняя страница Bilibili',
-                'githubPage': 'Проект Github',
-                'confirmDelete': 'Вы уверены, что хотите удалить "{name}"?',
-                'confirmReset': 'Вы уверены, что хотите сбросить все настройки? Это очистит все пользовательские настройки и списки имен. Это действие нельзя отменить!',
-                'confirmImport': 'Импорт настроек перезапишет все текущие настройки. Вы уверены, что хотите продолжить?',
-                'exportSuccess': 'Настройки успешно экспортированы!',
-                'importSuccess': 'Настройки успешно импортированы! Страница будет обновлена для применения новых настроек.',
-                'resetSuccess': 'Все настройки сброшены! Страница будет обновлена для применения настроек по умолчанию.',
-                'importFailed': 'Ошибка импорта: неверный формат файла',
-                'namesImportSuccess': 'Успешно импортировано {count} имен',
-                'namesImportFailed': 'Файл пуст или формат неверный',
-                'nameAdded': 'Успешно добавлено {name}, всего {count} имен',
-                'namesReloaded': 'Перезагружено {count} имен',
-                'namesImported': 'Импортировано {count} имен из файла'
+                name: '	Русский(Россия)',
+                dir: 'ltr',
+                strings: {
+                    appTitle: 'Квантовый Вызов',
+                    statusReady: 'Список загружен',
+                    statusRolling: 'Вызываю...',
+                    selectedText: 'Выбран:',
+                    waitingName: 'Ожидание вызова',
+                    startRollCall: 'Начать Вызов',
+                    stopRollCall: 'Остановить Вызов',
+                    reloadNames: 'Перезагрузить Список',
+                    navGeneral: 'Общие',
+                    navAppearance: 'Внешний вид',
+                    navNames: 'Список',
+                    navAbout: 'О программе',
+                    currentTabTitle: 'Общие настройки',
+                    languageTitle: 'Языковые настройки',
+                    languageSettingTitle: 'Язык интерфейса',
+                    languageSettingDesc: 'Выберите язык отображения',
+                    behaviorTitle: 'Настройки поведения',
+                    autoSaveTitle: 'Автосохранение',
+                    autoSaveDesc: 'Автоматически сохранять список и настройки',
+                    themeTitle: 'Настройки темы',
+                    themeModeTitle: 'Режим темы',
+                    themeModeDesc: 'Выберите светлую или темную тему',
+                    materialTitle: 'Материальные эффекты',
+                    materialEffectTitle: 'Материал интерфейса',
+                    materialEffectDesc: 'Выберите эффект материала интерфейса',
+                    manageNamesTitle: 'Управление списком',
+                    addNameTitle: 'Добавить имя',
+                    addNameDesc: 'Добавить новое имя в список',
+                    exportNamesText: 'Экспорт списка',
+                    importNamesText: 'Импорт списка',
+                    resetNamesText: 'Сбросить список',
+                    saveText: 'Сохранить',
+                    cancelText: 'Отмена',
+                    editText: 'Редактировать',
+                    deleteText: 'Удалить',
+                    confirmReset: 'Вы уверены, что хотите сбросить список имен? Это удалит все добавленные имена.'
+                }
+            },
+            'ar-SA': {
+                name: 'العربية(العالم العربي)',
+                dir: 'rtl',
+                strings: {
+                    appTitle: 'نداء الكم',
+                    statusReady: 'تم تحميل القائمة',
+                    statusRolling: 'جاري النداء...',
+                    selectedText: 'المختار:',
+                    waitingName: 'في انتظار النداء',
+                    startRollCall: 'بدء النداء',
+                    stopRollCall: 'إيقاف النداء',
+                    reloadNames: 'إعادة تحميل الأسماء',
+                    navGeneral: 'عام',
+                    navAppearance: 'المظهر',
+                    navNames: 'القائمة',
+                    navAbout: 'حول',
+                    currentTabTitle: 'الإعدادات العامة',
+                    languageTitle: 'إعدادات اللغة',
+                    languageSettingTitle: 'لغة الواجهة',
+                    languageSettingDesc: 'اختر لغة العرض',
+                    behaviorTitle: 'إعدادات السلوك',
+                    autoSaveTitle: 'الحفظ التلقائي',
+                    autoSaveDesc: 'حفظ القائمة والإعدادات تلقائيًا',
+                    themeTitle: 'إعدادات السمة',
+                    themeModeTitle: 'وضع السمة',
+                    themeModeDesc: 'اختر السمة الفاتحة أو الداكنة',
+                    materialTitle: 'تأثيرات المواد',
+                    materialEffectTitle: 'مادة الواجهة',
+                    materialEffectDesc: 'اختر تأثير مادة الواجهة',
+                    manageNamesTitle: 'إدارة القائمة',
+                    addNameTitle: 'إضافة اسم',
+                    addNameDesc: 'إضافة اسم جديد إلى القائمة',
+                    exportNamesText: 'تصدير القائمة',
+                    importNamesText: 'استيراد القائمة',
+                    resetNamesText: 'إعادة تعيين القائمة',
+                    saveText: 'حفظ',
+                    cancelText: 'إلغاء',
+                    editText: 'تحرير',
+                    deleteText: 'حذف',
+                    confirmReset: 'هل أنت متأكد من أنك تريد إعادة تعيين قائمة الأسماء؟ سيؤدي هذا إلى حذف جميع الأسماء المضافة.'
+                }
+            },
+            'eo-UY': {
+                name: 'Esperanto(Esperantujo)',
+                dir: 'ltr',
+                strings: {
+                    appTitle: 'Kvantuma Voknomo',
+                    statusReady: 'Listo ŝargita',
+                    statusRolling: 'Vokante...',
+                    selectedText: 'Selektita:',
+                    waitingName: 'Atendante voknomadon',
+                    startRollCall: 'Komenci Voknomadon',
+                    stopRollCall: 'Ĉesi Voknomadon',
+                    reloadNames: 'Reŝargi Nomojn',
+                    navGeneral: 'Ĝenerala',
+                    navAppearance: 'Aspekto',
+                    navNames: 'Nomlisto',
+                    navAbout: 'Pri',
+                    currentTabTitle: 'Ĝeneralaj Agordoj',
+                    languageTitle: 'Lingvaj Agordoj',
+                    languageSettingTitle: 'Fasada Lingvo',
+                    languageSettingDesc: 'Elektu montrolingvon',
+                    behaviorTitle: 'Kondutaj Agordoj',
+                    autoSaveTitle: 'Aŭtomata Konservado',
+                    autoSaveDesc: 'Aŭtomate konservi liston kaj agordojn',
+                    themeTitle: 'Temaj Agordoj',
+                    themeModeTitle: 'Tema Reĝimo',
+                    themeModeDesc: 'Elektu helan aŭ malhelan temon',
+                    materialTitle: 'Materialaj Efektoj',
+                    materialEffectTitle: 'Fasada Materialo',
+                    materialEffectDesc: 'Elektu fasadan materialan efikon',
+                    manageNamesTitle: 'Nomlisto Administrado',
+                    addNameTitle: 'Aldoni Nomon',
+                    addNameDesc: 'Aldoni novan nomon al la listo',
+                    exportNamesText: 'Eksporti Nomliston',
+                    importNamesText: 'Importi Nomliston',
+                    resetNamesText: 'Restarigi Nomliston',
+                    saveText: 'Konservi',
+                    cancelText: 'Nuligi',
+                    editText: 'Redakti',
+                    deleteText: 'Forigi',
+                    confirmReset: 'Ĉu vi certas, ke vi volas restarigi la nomliston? Ĉi tio forigos ĉiujn aldonitajn nomojn.'
+                }
+            },
+            'lzh': {
+                name: '文言(華夏)',
+                dir: 'ltr',
+                strings: {
+                    appTitle: '量子點名',
+                    statusReady: '名單已備',
+                    statusRolling: '點名中...',
+                    selectedText: '中選者：',
+                    waitingName: '待點名',
+                    startRollCall: '始點名',
+                    stopRollCall: '止點名',
+                    reloadNames: '重載名單',
+                    navGeneral: '通則',
+                    navAppearance: '外觀',
+                    navNames: '名錄',
+                    navAbout: '關於',
+                    currentTabTitle: '通則設置',
+                    languageTitle: '語言設置',
+                    languageSettingTitle: '界面語言',
+                    languageSettingDesc: '擇顯示語言',
+                    behaviorTitle: '行爲設置',
+                    autoSaveTitle: '自動存儲',
+                    autoSaveDesc: '自動存名錄與設置',
+                    themeTitle: '主題設置',
+                    themeModeTitle: '主題模式',
+                    themeModeDesc: '擇明暗主題',
+                    materialTitle: '材質效果',
+                    materialEffectTitle: '界面材質',
+                    materialEffectDesc: '擇界面材質效果',
+                    manageNamesTitle: '名錄管理',
+                    addNameTitle: '添名',
+                    addNameDesc: '添新名於錄',
+                    exportNamesText: '出名錄',
+                    importNamesText: '入名錄',
+                    resetNamesText: '重置名錄',
+                    saveText: '存',
+                    cancelText: '罷',
+                    editText: '修',
+                    deleteText: '刪',
+                    confirmReset: '確欲重置名錄乎？此將刪盡所添之名。'
+                }
+            },
+            'en-UD': {
+                name: 'ɥsᴉꞁᵷuƎ(uʍoᗡ ǝpᴉsd∩)',
+                dir: 'rtl',
+                strings: {
+                    appTitle: 'llɐƆ llɐɹ ɯnʇuɐꞱ',
+                    statusReady: 'pǝpɐol ʇsᴉꞁ',
+                    statusRolling: '...uᴉ llɐɔ llɐɹ',
+                    selectedText: ':sᴉ ʇɔǝlǝS',
+                    waitingName: 'llɐɔ llɐɹ ɹoɟ ƃuᴉʇᴉɐʍ',
+                    startRollCall: 'llɐƆ llɐɹ ʇɹɐʇS',
+                    stopRollCall: 'llɐƆ llɐɹ doʇS',
+                    reloadNames: 'sǝɯɐN pɐolǝɹ',
+                    navGeneral: 'lɐɹǝuǝ⅁',
+                    navAppearance: 'ǝɔuɐɹǝddɐ',
+                    navNames: 'sǝɯɐN',
+                    navAbout: 'ʇnoqɐ',
+                    currentTabTitle: 'sƃuᴉʇʇǝS lɐɹǝuǝ⅁',
+                    languageTitle: 'sƃuᴉʇʇǝS ǝƃɐnƃuɐꞱ',
+                    languageSettingTitle: 'ǝƃɐnƃuɐꞱ ǝɔɐɟɹǝʇuI',
+                    languageSettingDesc: 'ʇɔǝlǝ sǝƃɐnƃuɐl ʎɐldsᴉp',
+                    behaviorTitle: 'sƃuᴉʇʇǝS ɹᴉnɥʌǝq',
+                    autoSaveTitle: 'ǝʌɐS oʇnꞱ',
+                    autoSaveDesc: 'ɔᴉʇɐɯoʇꞁɐ sƃuᴉʇʇǝS puɐ ʇsᴉꞁ pǝʌɐs',
+                    themeTitle: 'sƃuᴉʇʇǝS ǝɯɐɥꞱ',
+                    themeModeTitle: 'ǝpᴉoW ǝɯɐɥꞱ',
+                    themeModeDesc: 'ʇɔǝlǝ ǝɯɐɥʇ ʞɹɐp ɹo ʇɥƃᴉꞱ',
+                    materialTitle: 'sʇɔǝɟɟƎ lɐᴉɹǝʇɐW',
+                    materialEffectTitle: 'lɐᴉɹǝʇɐW ǝɔɐɟɹǝʇuI',
+                    materialEffectDesc: 'ʇɔǝlǝ ʇɔǝɟɟǝ lɐᴉɹǝʇɐɯ ǝɔɐɟɹǝʇuI',
+                    manageNamesTitle: 'ʇuǝɯɐuɐɹ⅁ ǝɯɐN',
+                    addNameTitle: 'ǝɯɐN pᴉppɐ',
+                    addNameDesc: 'ʇsᴉꞁ ǝɥʇ oʇ ʍǝu ǝɯɐu pᴉppɐ',
+                    exportNamesText: 'sǝɯɐN ʇɹoddxƎ',
+                    importNamesText: 'sǝɯɐN ʇɹodɯI',
+                    resetNamesText: 'sǝɯɐN ʇǝsǝɹ',
+                    saveText: 'ǝʌɐs',
+                    cancelText: 'lǝɔuɐɔ',
+                    editText: 'ʇᴉpƎ',
+                    deleteText: 'ǝʇǝꞁƎp',
+                    confirmReset: '˙sǝɯɐu pǝppɐ ǝɥʇ ʇnoqɐ llɐ ʇǝlǝp lᴉʍ sᴉɥ┴ ˙ʇsᴉꞁ ǝɯɐu ǝɥʇ ʇǝsǝɹ oʇ ʇuɐʍ noʎ ɹǝʇɔǝs noʎ ǝɹɐ ʎH'
+                }
+            },
+            'en-PT': {
+                name: 'Pirate Speak(The Seven Seas)',
+                dir: 'ltr',
+                strings: {
+                    appTitle: 'Quantum Roll Call',
+                    statusReady: 'List be loaded, aye!',
+                    statusRolling: 'Rollin\'... arrr!',
+                    selectedText: 'Selected scallywag:',
+                    waitingName: 'Waitin\' fer roll call',
+                    startRollCall: 'Start Roll Call',
+                    stopRollCall: 'Avast Roll Call',
+                    reloadNames: 'Reload Names',
+                    navGeneral: 'General',
+                    navAppearance: 'Appearance',
+                    navNames: 'Crew',
+                    navAbout: 'About',
+                    currentTabTitle: 'General Settings',
+                    languageTitle: 'Language Settings',
+                    languageSettingTitle: 'Tongue o\' the Interface',
+                    languageSettingDesc: 'Choose yer display tongue',
+                    behaviorTitle: 'Behavior Settings',
+                    autoSaveTitle: 'Auto Save',
+                    autoSaveDesc: 'Save list and settings automagically',
+                    themeTitle: 'Theme Settings',
+                    themeModeTitle: 'Theme Mode',
+                    themeModeDesc: 'Choose light or dark theme',
+                    materialTitle: 'Material Effects',
+                    materialEffectTitle: 'Interface Material',
+                    materialEffectDesc: 'Choose interface material effect',
+                    manageNamesTitle: 'Crew Management',
+                    addNameTitle: 'Add Scallywag',
+                    addNameDesc: 'Add new scallywag to the crew',
+                    exportNamesText: 'Export Crew',
+                    importNamesText: 'Import Crew',
+                    resetNamesText: 'Reset Crew',
+                    saveText: 'Save',
+                    cancelText: 'Cancel',
+                    editText: 'Edit',
+                    deleteText: 'Walk the Plank',
+                    confirmReset: 'Arrr! Ye sure ye want to reset the crew list? This\'ll send all scallywags to Davy Jones\' locker!'
+                }
             }
         };
-        
-        // 动态文本替换函数
-        function formatText(text, params = {}) {
-            return text.replace(/{(\w+)}/g, (match, key) => {
-                return params[key] !== undefined ? params[key] : match;
+
+        // 定义语言列表顺序（不包括海盗语）
+        const languageOrder = [
+            'zh-CN', 'zh-TW', 'en-US', 'ja-JP', 'ko-KR', 'ru-RU', 
+            'ar-SA', 'eo-UY', 'lzh', 'en-UD'
+        ];
+
+        // 应用状态
+        let state = {
+            isRolling: false,
+            names: ['张三', '李四', '王五', '赵六', '钱七'],
+            currentName: '',
+            rollInterval: null,
+            rollSpeed: 100,
+            language: 'zh-CN',
+            theme: 'dark',
+            material: 'acrylic',
+            autoSave: true
+        };
+
+        // DOM元素
+        const elements = {
+            appTitle: document.getElementById('appTitle'),
+            status: document.getElementById('status'),
+            selectedText: document.getElementById('selectedText'),
+            selectedName: document.getElementById('selectedName'),
+            startStopBtn: document.getElementById('startStopBtn'),
+            startRollCallText: document.getElementById('startRollCallText'),
+            reloadBtn: document.getElementById('reloadBtn'),
+            reloadNamesText: document.getElementById('reloadNamesText'),
+            settingsBtn: document.getElementById('settingsBtn'),
+            settingsPanel: document.getElementById('settingsPanel'),
+            settingsClose: document.getElementById('settingsClose'),
+            languageSelector: document.getElementById('languageSelector'),
+            selectedLanguageText: document.getElementById('selectedLanguageText'),
+            themeGroup: document.getElementById('themeGroup'),
+            materialGroup: document.getElementById('materialGroup'),
+            autoSaveGroup: document.getElementById('autoSaveGroup'),
+            nameInput: document.getElementById('nameInput'),
+            addNameBtn: document.getElementById('addNameBtn'),
+            namesList: document.getElementById('namesList'),
+            exportNamesBtn: document.getElementById('exportNamesBtn'),
+            importNamesBtn: document.getElementById('importNamesBtn'),
+            resetNamesBtn: document.getElementById('resetNamesBtn')
+        };
+
+        // 初始化应用
+        function initApp() {
+            loadState();
+            setupEventListeners();
+            updateUI();
+            renderNamesList();
+            populateLanguageSelector();
+            updateButtonState();
+            // 修复：确保设置面板中的选项正确反映当前设置
+            updateSettingsUI();
+        }
+
+        // 加载状态
+        function loadState() {
+            const savedState = localStorage.getItem('quantumRollCallState');
+            if (savedState) {
+                const parsedState = JSON.parse(savedState);
+                state = { ...state, ...parsedState };
+            }
+            
+            // 应用保存的设置
+            document.body.setAttribute('data-theme', state.theme);
+            document.body.className = `${state.theme === 'light' ? 'light' : ''} material-${state.material}`;
+        }
+
+        // 保存状态
+        function saveState() {
+            if (state.autoSave) {
+                localStorage.setItem('quantumRollCallState', JSON.stringify(state));
+            }
+        }
+
+        // 设置事件监听器
+        function setupEventListeners() {
+            // 点名控制
+            elements.startStopBtn.addEventListener('click', toggleRollCall);
+            elements.reloadBtn.addEventListener('click', reloadNames);
+            
+            // 设置面板
+            elements.settingsBtn.addEventListener('click', openSettings);
+            elements.settingsClose.addEventListener('click', closeSettings);
+            
+            // 语言选择
+            elements.languageSelector.addEventListener('click', toggleLanguageSelector);
+            
+            // 主题切换
+            elements.themeGroup.addEventListener('click', (e) => {
+                if (e.target.classList.contains('radio-option')) {
+                    setActiveOption(elements.themeGroup, e.target);
+                    state.theme = e.target.dataset.value;
+                    document.body.setAttribute('data-theme', state.theme);
+                    saveState();
+                    updateUI();
+                }
+            });
+            
+            // 材质效果切换
+            elements.materialGroup.addEventListener('click', (e) => {
+                if (e.target.classList.contains('radio-option')) {
+                    setActiveOption(elements.materialGroup, e.target);
+                    state.material = e.target.dataset.value;
+                    document.body.className = `${state.theme === 'light' ? 'light' : ''} material-${state.material}`;
+                    saveState();
+                }
+            });
+            
+            // 自动保存切换
+            elements.autoSaveGroup.addEventListener('click', (e) => {
+                if (e.target.classList.contains('radio-option')) {
+                    setActiveOption(elements.autoSaveGroup, e.target);
+                    state.autoSave = e.target.dataset.value === 'true';
+                    saveState();
+                }
+            });
+            
+            // 名单管理
+            elements.addNameBtn.addEventListener('click', addName);
+            elements.nameInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') addName();
+            });
+            
+            // 名单操作
+            elements.exportNamesBtn.addEventListener('click', exportNames);
+            elements.importNamesBtn.addEventListener('click', importNames);
+            elements.resetNamesBtn.addEventListener('click', resetNames);
+            
+            // 导航
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    switchTab(e.currentTarget.dataset.tab);
+                });
+            });
+            
+            // 点击设置面板外部关闭
+            elements.settingsPanel.addEventListener('click', (e) => {
+                if (e.target === elements.settingsPanel) {
+                    closeSettings();
+                }
             });
         }
-        
-        document.addEventListener('DOMContentLoaded', function() {
-            const startStopBtn = document.getElementById('startStopBtn');
-            const reloadBtn = document.getElementById('reloadBtn');
-            const selectedName = document.getElementById('selectedName');
-            const status = document.getElementById('status');
-            const settingsBtn = document.getElementById('settingsBtn');
-            const settingsPanel = document.getElementById('settingsPanel');
-            const closeSettings = document.getElementById('closeSettings');
-            const currentTabTitle = document.getElementById('currentTabTitle');
-            const navItems = document.querySelectorAll('.nav-item');
-            
-            // 名单管理元素
-            const newNameInput = document.getElementById('newNameInput');
-            const addNameBtn = document.getElementById('addNameBtn');
-            const namesList = document.getElementById('namesList');
-            const importNamesBtn = document.getElementById('importNamesBtn');
-            const namesFileInput = document.getElementById('namesFileInput');
-            
-            // 设置操作元素
-            const exportSettingsBtn = document.getElementById('exportSettingsBtn');
-            const importSettingsBtn = document.getElementById('importSettingsBtn');
-            const resetSettingsBtn = document.getElementById('resetSettingsBtn');
-            const settingsFileInput = document.getElementById('settingsFileInput');
-            
-            // 语言选择器元素
-            const languageSelector = document.getElementById('languageSelector');
-            const currentLanguageText = document.getElementById('currentLanguageText');
-            const languageOptions = document.querySelectorAll('.language-option');
-            
-            // 单选按钮组
-            const themeGroup = document.getElementById('themeGroup');
-            const materialGroup = document.getElementById('materialGroup');
-            
-            let names = [...defaultNames];
-            let isSelecting = false;
-            let selectionInterval;
-            let editingIndex = -1;
-            let selectionSpeed = 100;
-            let currentLanguage = 'zh-CN';
-            let currentResources = languageResources[currentLanguage];
-            
-            // 初始化设置
-            function initSettings() {
-                initLanguage();
-                initTheme();
-                initMaterial();
-                initGeneral();
-                initNames();
-                initNameManagement();
-                updateUIWithLanguage();
-                
-                // 确保正确的初始标签页状态
-                switchTab('general');
-            }
-            
-            // 语言设置功能
-            function initLanguage() {
-                const savedLanguage = localStorage.getItem('language') || 'zh-CN';
-                currentLanguage = savedLanguage;
-                currentResources = languageResources[currentLanguage];
-                
-                // 更新自定义语言选择器
-                updateLanguageSelector();
-                
-                // 语言选择器事件
-                languageSelector.querySelector('.selected-language').addEventListener('click', function() {
-                    languageSelector.classList.toggle('active');
-                });
-                
-                languageOptions.forEach(option => {
-                    option.addEventListener('click', function() {
-                        const selectedLanguage = this.dataset.value;
-                        currentLanguage = selectedLanguage;
-                        currentResources = languageResources[currentLanguage];
-                        localStorage.setItem('language', selectedLanguage);
-                        
-                        // 更新选择器显示
-                        updateLanguageSelector();
-                        updateUIWithLanguage();
-                        
-                        // 关闭选择器
-                        languageSelector.classList.remove('active');
-                    });
-                });
-                
-                // 点击其他地方关闭语言选择器
-                document.addEventListener('click', function(e) {
-                    if (!languageSelector.contains(e.target)) {
-                        languageSelector.classList.remove('active');
-                    }
-                });
-            }
-            
-            function updateLanguageSelector() {
-                const languageTexts = {
-                    'zh-CN': '简体中文',
-                    'zh-TW': '繁體中文',
-                    'en-US': 'English',
-                    'ja-JP': '日本語',
-                    'ko-KR': '한국어',
-                    'fr-FR': 'Français',
-                    'de-DE': 'Deutsch',
-                    'es-ES': 'Español',
-                    'ru-RU': 'Русский'
-                };
-                
-                currentLanguageText.textContent = languageTexts[currentLanguage];
-                
-                // 更新选项激活状态
-                languageOptions.forEach(option => {
-                    if (option.dataset.value === currentLanguage) {
-                        option.classList.add('active');
-                    } else {
-                        option.classList.remove('active');
-                    }
-                });
-            }
-            
-            // 更新界面语言
-            function updateUIWithLanguage() {
-                const t = currentResources;
-                
-                // 更新主界面
-                document.title = t.appTitle;
-                document.getElementById('appTitle').textContent = t.appTitle;
-                document.getElementById('selectedText').textContent = t.selectedText;
-                document.getElementById('selectedName').textContent = t.waitingText;
-                document.getElementById('startRollCallText').textContent = t.startRollCall;
-                document.getElementById('reloadNamesText').textContent = t.reloadNames;
-                
-                // 更新状态
-                if (names.length > 0) {
-                    status.textContent = formatText(t.statusLoaded, { count: names.length });
-                } else {
-                    status.textContent = t.statusNoNames;
-                }
-                
-                // 更新导航
-                document.getElementById('navGeneral').textContent = t.generalSettings;
-                document.getElementById('navAppearance').textContent = t.appearanceSettings;
-                document.getElementById('navNames').textContent = t.nameManagement;
-                document.getElementById('navAbout').textContent = t.aboutSystem;
-                
-                // 更新当前选项卡标题
-                const activeTab = document.querySelector('.nav-item.active').dataset.tab;
-                const tabTitles = {
-                    'general': t.generalSettings,
-                    'appearance': t.appearanceSettings,
-                    'names': t.nameManagement,
-                    'about': t.aboutSystem
-                };
-                currentTabTitle.textContent = tabTitles[activeTab];
-                
-                // 更新通用设置
-                document.getElementById('languageTitle').textContent = t.languageTitle;
-                document.getElementById('languageSettingTitle').textContent = t.languageSetting;
-                document.getElementById('languageSettingDesc').textContent = t.languageDesc;
-                
-                document.getElementById('settingsActionsTitle').textContent = t.settingsActions;
-                document.getElementById('exportSettingsText').textContent = t.exportSettings;
-                document.getElementById('importSettingsText').textContent = t.importSettings;
-                document.getElementById('resetSettingsText').textContent = t.resetSettings;
-                
-                // 更新外观设置
-                document.getElementById('themeTitle').textContent = t.themeTitle;
-                document.getElementById('themeModeTitle').textContent = t.themeMode;
-                document.getElementById('themeModeDesc').textContent = t.themeDesc;
-                document.getElementById('darkThemeOption').textContent = t.dark;
-                document.getElementById('lightThemeOption').textContent = t.light;
-                document.getElementById('autoThemeOption').textContent = t.auto;
 
-                document.getElementById('materialTitle').textContent = t.materialTitle;
-                document.getElementById('materialTypeTitle').textContent = t.materialType;
-                document.getElementById('materialTypeDesc').textContent = t.materialDesc;
-                document.getElementById('acrylicOption').textContent = t.acrylic;
-                document.getElementById('frostedGlassOption').textContent = t.frostedGlass;
-                document.getElementById('noMaterialOption').textContent = t.noMaterial;
-                
-                // 更新名单管理
-                document.getElementById('nameManagementTitle').textContent = t.nameManagement;
-                newNameInput.placeholder = t.addName + '...';
-                document.getElementById('addNameBtnText').textContent = t.addName;
-                document.getElementById('importNamesBtnText').textContent = t.importNames;
-                
-                // 更新关于页面
-                document.getElementById('linksTitle').textContent = t.links;
-                document.getElementById('bilibiliHomeText').textContent = t.bilibiliHome;
-                document.getElementById('githubPageText').textContent = t.githubPage;
-                
-                // 重新渲染名单列表
-                renderEditableNamesList();
+        // 修复：更新设置面板中的选项状态
+        function updateSettingsUI() {
+            // 更新语言选择器
+            const languageOptions = document.querySelectorAll('.language-option');
+            languageOptions.forEach(option => {
+                option.classList.toggle('active', option.dataset.value === state.language);
+            });
+            elements.selectedLanguageText.textContent = languages[state.language].name;
+            
+            // 更新主题选项
+            const themeOptions = elements.themeGroup.querySelectorAll('.radio-option');
+            themeOptions.forEach(option => {
+                option.classList.toggle('active', option.dataset.value === state.theme);
+            });
+            
+            // 更新材质选项
+            const materialOptions = elements.materialGroup.querySelectorAll('.radio-option');
+            materialOptions.forEach(option => {
+                option.classList.toggle('active', option.dataset.value === state.material);
+            });
+            
+            // 更新自动保存选项
+            const autoSaveOptions = elements.autoSaveGroup.querySelectorAll('.radio-option');
+            autoSaveOptions.forEach(option => {
+                option.classList.toggle('active', option.dataset.value === state.autoSave.toString());
+            });
+        }
+
+        // 切换点名状态
+        function toggleRollCall() {
+            if (state.isRolling) {
+                stopRollCall();
+            } else {
+                startRollCall();
+            }
+        }
+
+        // 开始点名
+        function startRollCall() {
+            if (state.names.length === 0) {
+                alert('名单为空，请先添加姓名！');
+                return;
             }
             
-            // 选项卡切换功能
-            function switchTab(tabName) {
-                // 更新导航项状态
-                navItems.forEach(item => {
-                    if (item.dataset.tab === tabName) {
-                        item.classList.add('active');
-                    } else {
-                        item.classList.remove('active');
-                    }
-                });
-                
-                // 更新内容区域
-                const tabContents = document.querySelectorAll('.tab-content');
-                tabContents.forEach(content => {
-                    content.classList.remove('active');
-                });
-                
-                const activeContent = document.getElementById(`${tabName}-content`);
-                if (activeContent) {
-                    activeContent.classList.add('active');
+            state.isRolling = true;
+            state.rollSpeed = 50;
+            
+            updateButtonState();
+            elements.selectedName.classList.add('animation');
+            elements.status.textContent = getString('statusRolling');
+            
+            // 清除之前的定时器
+            if (state.rollInterval) {
+                clearInterval(state.rollInterval);
+            }
+            
+            state.rollInterval = setInterval(() => {
+                const randomIndex = Math.floor(Math.random() * state.names.length);
+                state.currentName = state.names[randomIndex];
+                elements.selectedName.textContent = state.currentName;
+            }, state.rollSpeed);
+        }
+
+        // 停止点名
+        function stopRollCall() {
+            state.isRolling = false;
+            
+            if (state.rollInterval) {
+                clearInterval(state.rollInterval);
+                state.rollInterval = null;
+            }
+            
+            updateButtonState();
+            elements.selectedName.classList.remove('animation');
+            elements.status.textContent = getString('statusReady');
+            
+            // 检查是否是excited名字，如果是则切换到海盗语
+            if (state.currentName && state.currentName.toLowerCase().includes('excited')) {
+                changeLanguage('en-PT');
+            }
+        }
+
+        // 更新按钮状态
+        function updateButtonState() {
+            const strings = languages[state.language].strings;
+            
+            if (state.isRolling) {
+                elements.startStopBtn.innerHTML = '<i class="fas fa-stop"></i><span id="startRollCallText">' + strings.stopRollCall + '</span>';
+                elements.startStopBtn.classList.remove('btn-start');
+                elements.startStopBtn.classList.add('btn-stop');
+            } else {
+                elements.startStopBtn.innerHTML = '<i class="fas fa-play"></i><span id="startRollCallText">' + strings.startRollCall + '</span>';
+                elements.startStopBtn.classList.remove('btn-stop');
+                elements.startStopBtn.classList.add('btn-start');
+            }
+        }
+
+        // 重新加载名单
+        function reloadNames() {
+            if (state.isRolling) {
+                stopRollCall();
+            }
+            
+            state.names = ['张三', '李四', '王五', '赵六', '钱七'];
+            renderNamesList();
+            
+            state.currentName = '';
+            elements.selectedName.textContent = getString('waitingName');
+            elements.status.textContent = getString('statusReady');
+            
+            saveState();
+        }
+
+        // 打开设置面板
+        function openSettings() {
+            elements.settingsPanel.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            // 修复：打开设置面板时更新UI状态
+            updateSettingsUI();
+        }
+
+        // 关闭设置面板
+        function closeSettings() {
+            elements.settingsPanel.classList.remove('active');
+            document.body.style.overflow = '';
+            saveState();
+        }
+
+        // 切换语言选择器
+        function toggleLanguageSelector() {
+            elements.languageSelector.classList.toggle('active');
+            
+            // 点击外部关闭
+            const closeSelector = (e) => {
+                if (!elements.languageSelector.contains(e.target)) {
+                    elements.languageSelector.classList.remove('active');
+                    document.removeEventListener('click', closeSelector);
                 }
+            };
+            
+            setTimeout(() => {
+                document.addEventListener('click', closeSelector);
+            }, 0);
+        }
+
+        // 填充语言选择器（不包括海盗语）
+        function populateLanguageSelector() {
+            const languageOptions = document.querySelector('.language-options');
+            languageOptions.innerHTML = '';
+            
+            // 按照定义的顺序添加语言选项（不包括海盗语）
+            languageOrder.forEach(langCode => {
+                if (languages[langCode]) {
+                    const option = document.createElement('div');
+                    option.className = `language-option ${state.language === langCode ? 'active' : ''}`;
+                    option.dataset.value = langCode;
+                    option.textContent = languages[langCode].name;
+                    
+                    option.addEventListener('click', () => {
+                        changeLanguage(langCode);
+                        elements.languageSelector.classList.remove('active');
+                    });
+                    
+                    languageOptions.appendChild(option);
+                }
+            });
+            
+            // 注意：不再添加海盗语选项到语言选择器
+        }
+
+        // 更改语言
+        function changeLanguage(langCode) {
+            if (languages[langCode]) {
+                state.language = langCode;
+                elements.selectedLanguageText.textContent = languages[langCode].name;
                 
-                // 更新标题
-                const tabTitles = {
-                    'general': currentResources.generalSettings,
-                    'appearance': currentResources.appearanceSettings,
-                    'names': currentResources.nameManagement,
-                    'about': currentResources.aboutSystem
-                };
-                currentTabTitle.textContent = tabTitles[tabName];
+                // 设置文本方向
+                document.body.setAttribute('dir', languages[langCode].dir);
+                
+                saveState();
+                updateUI();
+                renderNamesList();
+                updateButtonState();
+                // 修复：更新设置面板中的选项状态
+                updateSettingsUI();
+            }
+        }
+
+        // 更新UI文本
+        function updateUI() {
+            const strings = languages[state.language].strings;
+            
+            // 更新所有文本元素
+            elements.appTitle.textContent = strings.appTitle;
+            elements.status.textContent = state.isRolling ? strings.statusRolling : strings.statusReady;
+            elements.selectedText.textContent = strings.selectedText;
+            
+            if (!state.currentName) {
+                elements.selectedName.textContent = strings.waitingName;
             }
             
-            // 通用设置功能
-            function initGeneral() {
-                // 设置操作事件
-                exportSettingsBtn.addEventListener('click', exportSettings);
-                importSettingsBtn.addEventListener('click', function() {
-                    settingsFileInput.click();
+            elements.reloadNamesText.textContent = strings.reloadNames;
+            
+            // 更新导航文本
+            document.getElementById('navGeneral').textContent = strings.navGeneral;
+            document.getElementById('navAppearance').textContent = strings.navAppearance;
+            document.getElementById('navNames').textContent = strings.navNames;
+            document.getElementById('navAbout').textContent = strings.navAbout;
+            
+            // 更新当前标签页标题
+            const activeTab = document.querySelector('.nav-item.active').dataset.tab;
+            document.getElementById('currentTabTitle').textContent = 
+                activeTab === 'general' ? strings.currentTabTitle :
+                activeTab === 'appearance' ? strings.navAppearance :
+                activeTab === 'names' ? strings.navNames : strings.navAbout;
+            
+            // 更新设置文本
+            document.getElementById('languageTitle').textContent = strings.languageTitle;
+            document.getElementById('languageSettingTitle').textContent = strings.languageSettingTitle;
+            document.getElementById('languageSettingDesc').textContent = strings.languageSettingDesc;
+            document.getElementById('behaviorTitle').textContent = strings.behaviorTitle;
+            document.getElementById('autoSaveTitle').textContent = strings.autoSaveTitle;
+            document.getElementById('autoSaveDesc').textContent = strings.autoSaveDesc;
+            document.getElementById('themeTitle').textContent = strings.themeTitle;
+            document.getElementById('themeModeTitle').textContent = strings.themeModeTitle;
+            document.getElementById('themeModeDesc').textContent = strings.themeModeDesc;
+            document.getElementById('materialTitle').textContent = strings.materialTitle;
+            document.getElementById('materialEffectTitle').textContent = strings.materialEffectTitle;
+            document.getElementById('materialEffectDesc').textContent = strings.materialEffectDesc;
+            document.getElementById('manageNamesTitle').textContent = strings.manageNamesTitle;
+            document.getElementById('addNameTitle').textContent = strings.addNameTitle;
+            document.getElementById('addNameDesc').textContent = strings.addNameDesc;
+            document.getElementById('exportNamesText').textContent = strings.exportNamesText;
+            document.getElementById('importNamesText').textContent = strings.importNamesText;
+            document.getElementById('resetNamesText').textContent = strings.resetNamesText;
+            
+            // 更新占位符文本
+            elements.nameInput.placeholder = strings.addNameTitle;
+        }
+
+        // 获取本地化字符串
+        function getString(key) {
+            return languages[state.language].strings[key] || key;
+        }
+
+        // 设置活动选项
+        function setActiveOption(container, activeOption) {
+            container.querySelectorAll('.radio-option').forEach(option => {
+                option.classList.remove('active');
+            });
+            activeOption.classList.add('active');
+        }
+
+        // 切换标签页
+        function switchTab(tabId) {
+            // 更新导航
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelector(`.nav-item[data-tab="${tabId}"]`).classList.add('active');
+            
+            // 更新内容
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(`${tabId}-content`).classList.add('active');
+            
+            // 更新标题
+            const strings = languages[state.language].strings;
+            document.getElementById('currentTabTitle').textContent = 
+                tabId === 'general' ? strings.currentTabTitle :
+                tabId === 'appearance' ? strings.navAppearance :
+                tabId === 'names' ? strings.navNames : strings.navAbout;
+        }
+
+        // 添加姓名
+        function addName() {
+            const name = elements.nameInput.value.trim();
+            if (name) {
+                state.names.push(name);
+                elements.nameInput.value = '';
+                renderNamesList();
+                saveState();
+                
+                // 检查是否是excited名字，如果是则切换到海盗语
+                if (name.toLowerCase().includes('excited')) {
+                    changeLanguage('en-PT');
+                }
+            }
+        }
+
+        // 渲染名单列表
+        function renderNamesList() {
+            elements.namesList.innerHTML = '';
+            
+            state.names.forEach((name, index) => {
+                const nameItem = document.createElement('div');
+                nameItem.className = 'name-item';
+                nameItem.innerHTML = `
+                    <div class="name-text">${name}</div>
+                    <div class="name-actions">
+                        <button class="name-edit-btn">${getString('editText')}</button>
+                        <button class="name-delete-btn">${getString('deleteText')}</button>
+                    </div>
+                `;
+                
+                // 编辑按钮事件
+                const editBtn = nameItem.querySelector('.name-edit-btn');
+                editBtn.addEventListener('click', () => {
+                    startEditName(index, nameItem, name);
                 });
-                settingsFileInput.addEventListener('change', importSettings);
-                resetSettingsBtn.addEventListener('click', resetSettings);
-            }
+                
+                // 删除按钮事件
+                const deleteBtn = nameItem.querySelector('.name-delete-btn');
+                deleteBtn.addEventListener('click', () => {
+                    deleteName(index);
+                });
+                
+                elements.namesList.appendChild(nameItem);
+            });
+        }
+
+        // 开始编辑姓名
+        function startEditName(index, nameItem, currentName) {
+            nameItem.classList.add('editing');
+            nameItem.innerHTML = `
+                <input type="text" class="edit-input" value="${currentName}">
+                <div class="edit-actions">
+                    <button class="save-btn">${getString('saveText')}</button>
+                    <button class="cancel-btn">${getString('cancelText')}</button>
+                </div>
+            `;
             
-            // 导出设置
-            function exportSettings() {
-                const settings = {
-                    theme: localStorage.getItem('theme') || 'dark',
-                    material: localStorage.getItem('material') || 'acrylic',
-                    customNames: localStorage.getItem('customNames') || '[]',
-                    language: localStorage.getItem('language') || 'zh-CN',
-                    exportDate: new Date().toISOString()
-                };
-                
-                const dataStr = JSON.stringify(settings, null, 2);
-                const dataBlob = new Blob([dataStr], {type: 'application/json'});
-                
-                const url = URL.createObjectURL(dataBlob);
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = `quantum_rollcall_settings_${new Date().toISOString().split('T')[0]}.json`;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                URL.revokeObjectURL(url);
-                
-                alert(currentResources.exportSuccess);
-            }
+            const editInput = nameItem.querySelector('.edit-input');
+            const saveBtn = nameItem.querySelector('.save-btn');
+            const cancelBtn = nameItem.querySelector('.cancel-btn');
             
-            // 导入设置
-            function importSettings(event) {
-                const file = event.target.files[0];
+            editInput.focus();
+            
+            saveBtn.addEventListener('click', () => {
+                const newName = editInput.value.trim();
+                if (newName) {
+                    state.names[index] = newName;
+                    renderNamesList();
+                    saveState();
+                    
+                    // 检查是否是excited名字，如果是则切换到海盗语
+                    if (newName.toLowerCase().includes('excited')) {
+                        changeLanguage('en-PT');
+                    }
+                }
+            });
+            
+            cancelBtn.addEventListener('click', () => {
+                renderNamesList();
+            });
+            
+            editInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    saveBtn.click();
+                }
+            });
+        }
+
+        // 删除姓名
+        function deleteName(index) {
+            state.names.splice(index, 1);
+            renderNamesList();
+            saveState();
+        }
+
+        // 导出名单
+        function exportNames() {
+            const dataStr = JSON.stringify(state.names, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = 'quantum_roll_call_names.json';
+            link.click();
+        }
+
+        // 导入名单
+        function importNames() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            
+            input.addEventListener('change', (e) => {
+                const file = e.target.files[0];
                 if (file) {
                     const reader = new FileReader();
-                    reader.onload = function(e) {
+                    reader.onload = (event) => {
                         try {
-                            const settings = JSON.parse(e.target.result);
-                            
-                            if (confirm(currentResources.confirmImport)) {
-                                // 应用导入的设置
-                                if (settings.theme) localStorage.setItem('theme', settings.theme);
-                                if (settings.material) localStorage.setItem('material', settings.material);
-                                if (settings.customNames) localStorage.setItem('customNames', settings.customNames);
-                                if (settings.language) localStorage.setItem('language', settings.language);
-                                
-                                // 重新初始化设置
-                                initSettings();
-                                alert(currentResources.importSuccess);
-                                setTimeout(() => {
-                                    location.reload();
-                                }, 1000);
+                            const importedNames = JSON.parse(event.target.result);
+                            if (Array.isArray(importedNames) && importedNames.every(name => typeof name === 'string')) {
+                                state.names = importedNames;
+                                renderNamesList();
+                                saveState();
+                                alert('名单导入成功！');
+                            } else {
+                                alert('文件格式不正确！');
                             }
                         } catch (error) {
-                            alert(currentResources.importFailed);
+                            alert('文件读取失败！');
                         }
                     };
                     reader.readAsText(file);
                 }
-                // 重置文件输入
-                event.target.value = '';
-            }
-            
-            // 重置设置
-            function resetSettings() {
-                if (confirm(currentResources.confirmReset)) {
-                    localStorage.clear();
-                    alert(currentResources.resetSuccess);
-                    setTimeout(() => {
-                        location.reload();
-                    }, 1000);
-                }
-            }
-            
-            // 名单管理功能
-            function initNameManagement() {
-                renderEditableNamesList();
-                
-                // 添加名字事件
-                addNameBtn.addEventListener('click', addNewName);
-                newNameInput.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        addNewName();
-                    }
-                });
-                
-                // 导入名单事件
-                importNamesBtn.addEventListener('click', function() {
-                    namesFileInput.click();
-                });
-                
-                namesFileInput.addEventListener('change', handleNamesFileUpload);
-            }
-            
-            function handleNamesFileUpload(event) {
-                const file = event.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        const content = e.target.result;
-                        // 处理不同格式的文件
-                        let importedNames = [];
-                        
-                        if (file.name.endsWith('.csv')) {
-                            // CSV格式处理
-                            importedNames = content.split(',').map(name => name.trim()).filter(name => name);
-                        } else {
-                            // 文本格式处理（每行一个名字）
-                            importedNames = content.split('\n').map(name => name.trim()).filter(name => name);
-                        }
-                        
-                        if (importedNames.length > 0) {
-                            names = importedNames;
-                            renderEditableNamesList();
-                            saveNamesToStorage();
-                            status.textContent = formatText(currentResources.namesImported, { count: names.length });
-                            alert(formatText(currentResources.namesImportSuccess, { count: names.length }));
-                        } else {
-                            alert(currentResources.namesImportFailed);
-                        }
-                    };
-                    reader.readAsText(file);
-                }
-            }
-            
-            function renderEditableNamesList() {
-                namesList.innerHTML = '';
-                
-                if (names.length === 0) {
-                    const emptyMessage = document.createElement('div');
-                    emptyMessage.className = 'name-item';
-                    emptyMessage.style.justifyContent = 'center';
-                    emptyMessage.style.opacity = '0.7';
-                    emptyMessage.textContent = currentResources.statusNoNames;
-                    namesList.appendChild(emptyMessage);
-                    return;
-                }
-                
-                names.forEach((name, index) => {
-                    const nameItem = document.createElement('div');
-                    nameItem.className = 'name-item';
-                    
-                    if (editingIndex === index) {
-                        nameItem.classList.add('editing');
-                        nameItem.innerHTML = `
-                            <input type="text" class="edit-input" value="${name}" id="editInput-${index}">
-                            <div class="edit-actions">
-                                <button class="save-btn">${currentResources.save}</button>
-                                <button class="cancel-btn">${currentResources.cancel}</button>
-                            </div>
-                        `;
-                        
-                        // 添加编辑事件
-                        const saveBtn = nameItem.querySelector('.save-btn');
-                        const cancelBtn = nameItem.querySelector('.cancel-btn');
-                        const editInput = nameItem.querySelector('.edit-input');
-                        
-                        saveBtn.addEventListener('click', () => saveName(index));
-                        cancelBtn.addEventListener('click', cancelEdit);
-                        editInput.addEventListener('keypress', (e) => {
-                            if (e.key === 'Enter') saveName(index);
-                        });
-                    } else {
-                        nameItem.innerHTML = `
-                            <div class="name-text">${name}</div>
-                            <div class="name-actions">
-                                <button class="name-edit-btn">${currentResources.edit}</button>
-                                <button class="name-delete-btn">${currentResources.delete}</button>
-                            </div>
-                        `;
-                        
-                        // 添加事件
-                        const editBtn = nameItem.querySelector('.name-edit-btn');
-                        const deleteBtn = nameItem.querySelector('.name-delete-btn');
-                        
-                        editBtn.addEventListener('click', () => startEdit(index));
-                        deleteBtn.addEventListener('click', () => deleteName(index));
-                    }
-                    
-                    namesList.appendChild(nameItem);
-                });
-            }
-            
-            function startEdit(index) {
-                editingIndex = index;
-                renderEditableNamesList();
-                const editInput = document.getElementById(`editInput-${index}`);
-                if (editInput) {
-                    editInput.focus();
-                    editInput.select();
-                }
-            }
-            
-            function saveName(index) {
-                const editInput = document.getElementById(`editInput-${index}`);
-                if (editInput && editInput.value.trim()) {
-                    names[index] = editInput.value.trim();
-                    editingIndex = -1;
-                    renderEditableNamesList();
-                    saveNamesToStorage();
-                }
-            }
-            
-            function cancelEdit() {
-                editingIndex = -1;
-                renderEditableNamesList();
-            }
-            
-            function deleteName(index) {
-                if (confirm(formatText(currentResources.confirmDelete, { name: names[index] }))) {
-                    names.splice(index, 1);
-                    if (editingIndex === index) {
-                        editingIndex = -1;
-                    } else if (editingIndex > index) {
-                        editingIndex--;
-                    }
-                    renderEditableNamesList();
-                    saveNamesToStorage();
-                    // 更新状态显示
-                    if (names.length > 0) {
-                        status.textContent = formatText(currentResources.statusLoaded, { count: names.length });
-                    } else {
-                        status.textContent = currentResources.statusNoNames;
-                    }
-                }
-            }
-            
-            function addNewName() {
-                const newName = newNameInput.value.trim();
-                if (newName) {
-                    names.push(newName);
-                    newNameInput.value = '';
-                    renderEditableNamesList();
-                    saveNamesToStorage();
-                    status.textContent = formatText(currentResources.nameAdded, { name: newName, count: names.length });
-                }
-            }
-            
-            function saveNamesToStorage() {
-                localStorage.setItem('customNames', JSON.stringify(names));
-            }
-            
-            function loadNamesFromStorage() {
-                const savedNames = localStorage.getItem('customNames');
-                if (savedNames) {
-                    names = JSON.parse(savedNames);
-                }
-            }
-            
-            // 主题切换功能
-            function initTheme() {
-                const savedTheme = localStorage.getItem('theme') || 'dark';
-                handleThemeChange(savedTheme);
-                updateRadioGroup(themeGroup, savedTheme);
-                
-                // 添加主题切换事件
-                themeGroup.querySelectorAll('.radio-option').forEach(option => {
-                    option.addEventListener('click', function() {
-                        const value = this.dataset.value;
-                        updateRadioGroup(themeGroup, value);
-                        handleThemeChange(value);
-                    });
-                });
-            }
-            
-            function handleThemeChange(theme) {
-                let actualTheme = theme;
-                
-                if (theme === 'auto') {
-                    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                        actualTheme = 'dark';
-                    } else {
-                        actualTheme = 'light';
-                    }
-                }
-                
-                document.documentElement.setAttribute('data-theme', actualTheme);
-                localStorage.setItem('theme', theme);
-            }
-            
-            // 材质设置功能
-            function initMaterial() {
-                const savedMaterial = localStorage.getItem('material') || 'acrylic';
-                handleMaterialChange(savedMaterial);
-                updateRadioGroup(materialGroup, savedMaterial);
-                
-                // 添加材质切换事件
-                materialGroup.querySelectorAll('.radio-option').forEach(option => {
-                    option.addEventListener('click', function() {
-                        const value = this.dataset.value;
-                        updateRadioGroup(materialGroup, value);
-                        handleMaterialChange(value);
-                    });
-                });
-            }
-            
-            function handleMaterialChange(material) {
-                document.body.classList.remove('material-none', 'material-acrylic', 'material-frosted-glass');
-                document.body.classList.add(`material-${material}`);
-                localStorage.setItem('material', material);
-            }
-            
-            // 更新单选按钮组状态
-            function updateRadioGroup(group, value) {
-                group.querySelectorAll('.radio-option').forEach(option => {
-                    if (option.dataset.value === value) {
-                        option.classList.add('active');
-                    } else {
-                        option.classList.remove('active');
-                    }
-                });
-            }
-            
-            // 设置面板功能
-            function openSettings() {
-                settingsPanel.classList.add('active');
-            }
-            
-            function closeSettingsPanel() {
-                settingsPanel.classList.remove('active');
-            }
-            
-            // 初始化名单显示
-            function initNames() {
-                loadNamesFromStorage();
-                if (names.length > 0) {
-                    status.textContent = formatText(currentResources.statusLoaded, { count: names.length });
-                } else {
-                    status.textContent = currentResources.statusNoNames;
-                }
-            }
-            
-            // 开始随机选择
-            function startSelection() {
-                if (names.length === 0) {
-                    alert(currentResources.statusNoNames);
-                    return;
-                }
-                
-                isSelecting = true;
-                updateButtonState();
-                selectedName.classList.add('animation');
-                
-                selectionInterval = setInterval(() => {
-                    const randomIndex = Math.floor(Math.random() * names.length);
-                    selectedName.textContent = names[randomIndex];
-                }, selectionSpeed);
-            }
-            
-            // 停止选择
-            function stopSelection() {
-                isSelecting = false;
-                clearInterval(selectionInterval);
-                updateButtonState();
-                selectedName.classList.remove('animation');
-                
-                selectedName.style.transform = 'scale(1.2)';
-                setTimeout(() => {
-                    selectedName.style.transform = 'scale(1)';
-                }, 300);
-            }
-            
-            // 更新按钮状态
-            function updateButtonState() {
-                if (isSelecting) {
-                    startStopBtn.innerHTML = `<i class="fas fa-pause"></i><span>${currentResources.stopRollCall}</span>`;
-                    startStopBtn.classList.remove('btn-start');
-                    startStopBtn.classList.add('btn-stop');
-                } else {
-                    startStopBtn.innerHTML = `<i class="fas fa-play"></i><span>${currentResources.startRollCall}</span>`;
-                    startStopBtn.classList.remove('btn-stop');
-                    startStopBtn.classList.add('btn-start');
-                }
-            }
-            
-            // 重新加载名单
-            function reloadNames() {
-                names = [...defaultNames];
-                status.textContent = formatText(currentResources.namesReloaded, { count: names.length });
-                
-                if (isSelecting) {
-                    stopSelection();
-                }
-                
-                selectedName.textContent = currentResources.waitingText;
-                renderEditableNamesList();
-                saveNamesToStorage();
-            }
-            
-            // 事件监听
-            startStopBtn.addEventListener('click', function() {
-                if (isSelecting) {
-                    stopSelection();
-                } else {
-                    startSelection();
-                }
             });
             
-            reloadBtn.addEventListener('click', reloadNames);
-            settingsBtn.addEventListener('click', openSettings);
-            closeSettings.addEventListener('click', closeSettingsPanel);
-            
-            // 导航切换事件
-            navItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    switchTab(this.dataset.tab);
-                });
-            });
-            
-            // 点击设置面板背景关闭
-            settingsPanel.addEventListener('click', function(e) {
-                if (e.target === settingsPanel) {
-                    closeSettingsPanel();
-                }
-            });
-            
-            // 初始化
-            initSettings();
-        });
+            input.click();
+        }
+
+        // 重置名单
+        function resetNames() {
+            if (confirm(getString('confirmReset'))) {
+                state.names = [];
+                renderNamesList();
+                saveState();
+            }
+        }
+
+        // 初始化应用
+        window.addEventListener('DOMContentLoaded', initApp);
     </script>
 </body>
 </html>
