@@ -329,6 +329,29 @@
                 color: var(--accent);
             }
         }
+
+        /* 消息提示动画 */
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
         
         /* 设置面板样式 */
         .settings-panel {
@@ -1131,7 +1154,7 @@
             <!-- 右侧内容区域 -->
             <div class="settings-main">
                 <div class="settings-header">
-                    <h2 id="currentTabTitle">通用设置</h2>
+                    <h2 id="currentTabTitle">通用</h2>
                 </div>
                 
                 <div class="settings-body">
@@ -1169,6 +1192,33 @@
                                     <div class="radio-group" id="autoSaveGroup">
                                         <div class="radio-option active" data-value="true">开启</div>
                                         <div class="radio-option" data-value="false">关闭</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 新增的备份与恢复设置组 -->
+                        <div class="settings-group">
+                            <h3 class="group-title" id="backupTitle">备份与恢复</h3>
+                            <div class="option-row">
+                                <div class="option-info">
+                                    <div class="option-title" id="backupSettingsTitle">设置管理</div>
+                                    <div class="option-desc" id="backupSettingsDesc">导出、导入或重置所有设置</div>
+                                </div>
+                                <div class="option-control">
+                                    <div class="settings-actions">
+                                        <button class="action-btn export" id="exportSettingsBtn">
+                                            <i class="fas fa-download"></i>
+                                            <span id="exportSettingsText">导出设置</span>
+                                        </button>
+                                        <button class="action-btn import" id="importSettingsBtn">
+                                            <i class="fas fa-upload"></i>
+                                            <span id="importSettingsText">导入设置</span>
+                                        </button>
+                                        <button class="action-btn reset" id="resetSettingsBtn">
+                                            <i class="fas fa-trash-alt"></i>
+                                            <span id="resetSettingsText">重置设置</span>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -1307,13 +1357,19 @@
                     navAppearance: '外观',
                     navNames: '名单',
                     navAbout: '关于',
-                    currentTabTitle: '通用设置',
+                    currentTabTitle: '通用',
                     languageTitle: '语言设置',
                     languageSettingTitle: '界面语言',
                     languageSettingDesc: '选择界面显示语言',
                     behaviorTitle: '行为设置',
                     autoSaveTitle: '自动保存',
                     autoSaveDesc: '自动保存名单和设置',
+                    backupTitle: '备份与恢复',
+                    backupSettingsTitle: '设置管理',
+                    backupSettingsDesc: '导出、导入或重置设置',
+                    exportSettingsText: '导出设置',
+                    importSettingsText: '导入设置',
+                    resetSettingsText: '重置设置',
                     themeTitle: '主题设置',
                     themeModeTitle: '主题模式',
                     themeModeDesc: '选择浅色或深色主题',
@@ -1330,7 +1386,13 @@
                     cancelText: '取消',
                     editText: '编辑',
                     deleteText: '删除',
-                    confirmReset: '确定要重置名单吗？这将删除所有已添加的姓名。'
+                    confirmReset: '确定要重置名单吗？这将删除所有已添加的姓名。',
+                    confirmImport: '确定要导入设置吗？这将覆盖当前的所有设置。',
+                    confirmResetAll: '确定要重置所有设置吗？这将恢复为默认设置，且无法撤销。',
+                    importSuccess: '设置导入成功!',
+                    importFailed: '设置导入失败，文件格式不正确!',
+                    exportSuccess: '设置导出成功!',
+                    resetSuccess: '设置重置成功!'
                 }
             },
             'zh-TW': {
@@ -1349,13 +1411,19 @@
                     navAppearance: '外觀',
                     navNames: '名單',
                     navAbout: '關於',
-                    currentTabTitle: '通用設置',
+                    currentTabTitle: '通用',
                     languageTitle: '語言設置',
                     languageSettingTitle: '界面語言',
                     languageSettingDesc: '選擇界面顯示語言',
                     behaviorTitle: '行為設置',
                     autoSaveTitle: '自動保存',
                     autoSaveDesc: '自動保存名單和設置',
+                    backupTitle: '備份與恢復',
+                    backupSettingsTitle: '設置管理',
+                    backupSettingsDesc: '導出、導入或重置所有設置',
+                    exportSettingsText: '導出設置',
+                    importSettingsText: '導入設置',
+                    resetSettingsText: '重置設置',
                     themeTitle: '主題設置',
                     themeModeTitle: '主題模式',
                     themeModeDesc: '選擇淺色或深色主題',
@@ -1372,7 +1440,13 @@
                     cancelText: '取消',
                     editText: '編輯',
                     deleteText: '刪除',
-                    confirmReset: '確定要重置名單嗎？這將刪除所有已添加的姓名。'
+                    confirmReset: '確定要重置名單嗎？這將刪除所有已添加的姓名。',
+                    confirmImport: '確定要導入設置嗎？這將覆蓋當前的所有設置。',
+                    confirmResetAll: '確定要重置所有設置嗎？這將恢復為默認設置，且無法撤銷。',
+                    importSuccess: '設置導入成功!',
+                    importFailed: '設置導入失敗，文件格式不正確!',
+                    exportSuccess: '設置導出成功!',
+                    resetSuccess: '設置重置成功!'
                 }
             },
             'en-US': {
@@ -1398,6 +1472,12 @@
                     behaviorTitle: 'Behavior Settings',
                     autoSaveTitle: 'Auto Save',
                     autoSaveDesc: 'Automatically save list and settings',
+                    backupTitle: 'Backup & Restore',
+                    backupSettingsTitle: 'Settings Management',
+                    backupSettingsDesc: 'Export, import or reset all settings',
+                    exportSettingsText: 'Export Settings',
+                    importSettingsText: 'Import Settings',
+                    resetSettingsText: 'Reset Settings',
                     themeTitle: 'Theme Settings',
                     themeModeTitle: 'Theme Mode',
                     themeModeDesc: 'Select light or dark theme',
@@ -1414,7 +1494,13 @@
                     cancelText: 'Cancel',
                     editText: 'Edit',
                     deleteText: 'Delete',
-                    confirmReset: 'Are you sure you want to reset the name list? This will delete all added names.'
+                    confirmReset: 'Are you sure you want to reset the name list? This will delete all added names.',
+                    confirmImport: 'Are you sure you want to import settings? This will overwrite all current settings.',
+                    confirmResetAll: 'Are you sure you want to reset all settings? This will restore default settings and cannot be undone.',
+                    importSuccess: 'Settings imported successfully!',
+                    importFailed: 'Settings import failed, file format is incorrect!',
+                    exportSuccess: 'Settings exported successfully!',
+                    resetSuccess: 'Settings reset successfully!'
                 }
             },
             'ja-JP': {
@@ -1433,13 +1519,19 @@
                     navAppearance: '外観',
                     navNames: '名簿',
                     navAbout: '情報',
-                    currentTabTitle: '一般設定',
+                    currentTabTitle: '一般',
                     languageTitle: '言語設定',
                     languageSettingTitle: 'インターフェース言語',
                     languageSettingDesc: '表示言語を選択',
                     behaviorTitle: '動作設定',
                     autoSaveTitle: '自動保存',
                     autoSaveDesc: 'リストと設定を自動保存',
+                    backupTitle: 'バックアップと復元',
+                    backupSettingsTitle: '設定管理',
+                    backupSettingsDesc: '設定のエクスポート、インポート、リセット',
+                    exportSettingsText: '設定をエクスポート',
+                    importSettingsText: '設定をインポート',
+                    resetSettingsText: '設定をリセット',
                     themeTitle: 'テーマ設定',
                     themeModeTitle: 'テーマモード',
                     themeModeDesc: 'ライトまたはダークテーマを選択',
@@ -1456,7 +1548,13 @@
                     cancelText: 'キャンセル',
                     editText: '編集',
                     deleteText: '削除',
-                    confirmReset: '名簿をリセットしてもよろしいですか？追加されたすべての名前が削除されます。'
+                    confirmReset: '名簿をリセットしてもよろしいですか？追加されたすべての名前が削除されます。',
+                    confirmImport: '設定をインポートしてもよろしいですか？現在のすべての設定が上書きされます。',
+                    confirmResetAll: 'すべての設定をリセットしてもよろしいですか？デフォルト設定に復元され、元に戻せません。',
+                    importSuccess: '設定のインポートに成功しました!',
+                    importFailed: '設定のインポートに失敗しました。ファイル形式が正しくありません!',
+                    exportSuccess: '設定のエクスポートに成功しました!',
+                    resetSuccess: '設定のリセットに成功しました!'
                 }
             },
             'ko-KR': {
@@ -1482,6 +1580,12 @@
                     behaviorTitle: '동작 설정',
                     autoSaveTitle: '자동 저장',
                     autoSaveDesc: '명단과 설정 자동 저장',
+                    backupTitle: '백업 및 복원',
+                    backupSettingsTitle: '설정 관리',
+                    backupSettingsDesc: '설정 내보내기, 가져오기 또는 재설정',
+                    exportSettingsText: '설정 내보내기',
+                    importSettingsText: '설정 가져오기',
+                    resetSettingsText: '설정 재설정',
                     themeTitle: '테마 설정',
                     themeModeTitle: '테마 모드',
                     themeModeDesc: '라이트 또는 다크 테마 선택',
@@ -1498,11 +1602,17 @@
                     cancelText: '취소',
                     editText: '편집',
                     deleteText: '삭제',
-                    confirmReset: '명단을 초기화하시겠습니까? 추가된 모든 이름이 삭제됩니다.'
+                    confirmReset: '명단을 초기화하시겠습니까? 추가된 모든 이름이 삭제됩니다.',
+                    confirmImport: '설정을 가져오시겠습니까? 현재 모든 설정이 덮어쓰기됩니다.',
+                    confirmResetAll: '모든 설정을 재설정하시겠습니까? 기본 설정으로 복원되며 취소할 수 없습니다.',
+                    importSuccess: '설정 가져오기 성공!',
+                    importFailed: '설정 가져오기 실패, 파일 형식이 올바르지 않습니다!',
+                    exportSuccess: '설정 내보내기 성공!',
+                    resetSuccess: '설정 재설정 성공!'
                 }
             },
             'ru-RU': {
-                name: '	Русский(Россия)',
+                name: 'Русский(Россия)',
                 dir: 'ltr',
                 strings: {
                     appTitle: 'Квантовый Вызов',
@@ -1524,6 +1634,12 @@
                     behaviorTitle: 'Настройки поведения',
                     autoSaveTitle: 'Автосохранение',
                     autoSaveDesc: 'Автоматически сохранять список и настройки',
+                    backupTitle: 'Резервное копирование и восстановление',
+                    backupSettingsTitle: 'Управление настройками',
+                    backupSettingsDesc: 'Экспорт, импорт или сброс всех настроек',
+                    exportSettingsText: 'Экспорт настроек',
+                    importSettingsText: 'Импорт настроек',
+                    resetSettingsText: 'Сбросить настройки',
                     themeTitle: 'Настройки темы',
                     themeModeTitle: 'Режим темы',
                     themeModeDesc: 'Выберите светлую или темную тему',
@@ -1540,7 +1656,13 @@
                     cancelText: 'Отмена',
                     editText: 'Редактировать',
                     deleteText: 'Удалить',
-                    confirmReset: 'Вы уверены, что хотите сбросить список имен? Это удалит все добавленные имена.'
+                    confirmReset: 'Вы уверены, что хотите сбросить список имен? Это удалит все добавленные имена.',
+                    confirmImport: 'Вы уверены, что хотите импортировать настройки? Это перезапишет все текущие настройки.',
+                    confirmResetAll: 'Вы уверены, что хотите сбросить все настройки? Это восстановит настройки по умолчанию и не может быть отменено.',
+                    importSuccess: 'Настройки успешно импортированы!',
+                    importFailed: 'Не удалось импортировать настройки, неверный формат файла!',
+                    exportSuccess: 'Настройки успешно экспортированы!',
+                    resetSuccess: 'Настройки успешно сброшены!'
                 }
             },
             'ar-SA': {
@@ -1566,6 +1688,12 @@
                     behaviorTitle: 'إعدادات السلوك',
                     autoSaveTitle: 'الحفظ التلقائي',
                     autoSaveDesc: 'حفظ القائمة والإعدادات تلقائيًا',
+                    backupTitle: 'النسخ الاحتياطي والاستعادة',
+                    backupSettingsTitle: 'إدارة الإعدادات',
+                    backupSettingsDesc: 'تصدير أو استيراد أو إعادة تعيين جميع الإعدادات',
+                    exportSettingsText: 'تصدير الإعدادات',
+                    importSettingsText: 'استيراد الإعدادات',
+                    resetSettingsText: 'إعادة تعيين الإعدادات',
                     themeTitle: 'إعدادات السمة',
                     themeModeTitle: 'وضع السمة',
                     themeModeDesc: 'اختر السمة الفاتحة أو الداكنة',
@@ -1582,7 +1710,13 @@
                     cancelText: 'إلغاء',
                     editText: 'تحرير',
                     deleteText: 'حذف',
-                    confirmReset: 'هل أنت متأكد من أنك تريد إعادة تعيين قائمة الأسماء؟ سيؤدي هذا إلى حذف جميع الأسماء المضافة.'
+                    confirmReset: 'هل أنت متأكد من أنك تريد إعادة تعيين قائمة الأسماء؟ سيؤدي هذا إلى حذف جميع الأسماء المضافة.',
+                    confirmImport: 'هل أنت متأكد من أنك تريد استيراد الإعدادات؟ سيؤدي هذا إلى استبدال جميع الإعدادات الحالية.',
+                    confirmResetAll: 'هل أنت متأكد من أنك تريد إعادة تعيين جميع الإعدادات؟ سيؤدي هذا إلى استعادة الإعدادات الافتراضية ولا يمكن التراجع عنه.',
+                    importSuccess: 'تم استيراد الإعدادات بنجاح!',
+                    importFailed: 'فشل استيراد الإعدادات، تنسيق الملف غير صحيح!',
+                    exportSuccess: 'تم تصدير الإعدادات بنجاح!',
+                    resetSuccess: 'تم إعادة تعيين الإعدادات بنجاح!'
                 }
             },
             'eo-UY': {
@@ -1608,6 +1742,12 @@
                     behaviorTitle: 'Kondutaj Agordoj',
                     autoSaveTitle: 'Aŭtomata Konservado',
                     autoSaveDesc: 'Aŭtomate konservi liston kaj agordojn',
+                    backupTitle: 'Rezervkopio kaj Restaŭrado',
+                    backupSettingsTitle: 'Agorda Administrado',
+                    backupSettingsDesc: 'Eksporti, importi aŭ restarigi ĉiujn agordojn',
+                    exportSettingsText: 'Eksporti Agordojn',
+                    importSettingsText: 'Importi Agordojn',
+                    resetSettingsText: 'Restarigi Agordojn',
                     themeTitle: 'Temaj Agordoj',
                     themeModeTitle: 'Tema Reĝimo',
                     themeModeDesc: 'Elektu helan aŭ malhelan temon',
@@ -1624,7 +1764,13 @@
                     cancelText: 'Nuligi',
                     editText: 'Redakti',
                     deleteText: 'Forigi',
-                    confirmReset: 'Ĉu vi certas, ke vi volas restarigi la nomliston? Ĉi tio forigos ĉiujn aldonitajn nomojn.'
+                    confirmReset: 'Ĉu vi certas, ke vi volas restarigi la nomliston? Ĉi tio forigos ĉiujn aldonitajn nomojn.',
+                    confirmImport: 'Ĉu vi certas, ke vi volas importi agordojn? Ĉi tio anstataŭigos ĉiujn nunajn agordojn.',
+                    confirmResetAll: 'Ĉu vi certas, ke vi volas restarigi ĉiujn agordojn? Ĉi tio restarigos defaŭltajn agordojn kaj ne povas esti malfarita.',
+                    importSuccess: 'Agordoj sukcese importitaj!',
+                    importFailed: 'Agordoj importo malsukcesis, dosierformato malĝustas!',
+                    exportSuccess: 'Agordoj sukcese eksportitaj!',
+                    resetSuccess: 'Agordoj sukcese restarigitaj!'
                 }
             },
             'lzh': {
@@ -1643,13 +1789,19 @@
                     navAppearance: '外觀',
                     navNames: '名錄',
                     navAbout: '關於',
-                    currentTabTitle: '通則設置',
+                    currentTabTitle: '通則',
                     languageTitle: '語言設置',
                     languageSettingTitle: '界面語言',
                     languageSettingDesc: '擇顯示語言',
                     behaviorTitle: '行爲設置',
                     autoSaveTitle: '自動存儲',
                     autoSaveDesc: '自動存名錄與設置',
+                    backupTitle: '備份與復原',
+                    backupSettingsTitle: '設置管理',
+                    backupSettingsDesc: '出、入或重置所有設置',
+                    exportSettingsText: '出設置',
+                    importSettingsText: '入設置',
+                    resetSettingsText: '重置設置',
                     themeTitle: '主題設置',
                     themeModeTitle: '主題模式',
                     themeModeDesc: '擇明暗主題',
@@ -1666,7 +1818,13 @@
                     cancelText: '罷',
                     editText: '修',
                     deleteText: '刪',
-                    confirmReset: '確欲重置名錄乎？此將刪盡所添之名。'
+                    confirmReset: '確欲重置名錄乎？此將刪盡所添之名。',
+                    confirmImport: '確欲入設置乎？此將覆今之所有設置。',
+                    confirmResetAll: '確欲重置所有設置乎？此將復原初之設置，不可復也。',
+                    importSuccess: '設置入之成矣!',
+                    importFailed: '設置入之敗矣，文之式非也!',
+                    exportSuccess: '設置出之成矣!',
+                    resetSuccess: '設置重置之成矣!'
                 }
             },
             'en-UD': {
@@ -1692,6 +1850,12 @@
                     behaviorTitle: 'sƃuᴉʇʇǝS ɹᴉnɥʌǝq',
                     autoSaveTitle: 'ǝʌɐS oʇnꞱ',
                     autoSaveDesc: 'ɔᴉʇɐɯoʇꞁɐ sƃuᴉʇʇǝS puɐ ʇsᴉꞁ pǝʌɐs',
+                    backupTitle: 'ǝɹnɐʇsǝɹ puɐ ʇndɐɔʞǝq',
+                    backupSettingsTitle: 'ʇuǝɯɐuɐɹ⅁ sƃuᴉʇʇǝS',
+                    backupSettingsDesc: 'ʇɔǝlǝɹ ɹo ʇɹodɯᴉ \'ɹoʇɹodxǝ\' sƃuᴉʇʇǝS llɐ',
+                    exportSettingsText: 'sƃuᴉʇʇǝS ʇɹoddxƎ',
+                    importSettingsText: 'sƃuᴉʇʇǝS ʇɹodɯI',
+                    resetSettingsText: 'sƃuᴉʇʇǝS ʇǝsǝɹ',
                     themeTitle: 'sƃuᴉʇʇǝS ǝɯɐɥꞱ',
                     themeModeTitle: 'ǝpᴉoW ǝɯɐɥꞱ',
                     themeModeDesc: 'ʇɔǝlǝ ǝɯɐɥʇ ʞɹɐp ɹo ʇɥƃᴉꞱ',
@@ -1708,7 +1872,13 @@
                     cancelText: 'lǝɔuɐɔ',
                     editText: 'ʇᴉpƎ',
                     deleteText: 'ǝʇǝꞁƎp',
-                    confirmReset: '˙sǝɯɐu pǝppɐ ǝɥʇ ʇnoqɐ llɐ ʇǝlǝp lᴉʍ sᴉɥ┴ ˙ʇsᴉꞁ ǝɯɐu ǝɥʇ ʇǝsǝɹ oʇ ʇuɐʍ noʎ ɹǝʇɔǝs noʎ ǝɹɐ ʎH'
+                    confirmReset: '˙sǝɯɐu pǝppɐ ǝɥʇ ʇnoqɐ llɐ ʇǝlǝp lᴉʍ sᴉɥ┴ ˙ʇsᴉꞁ ǝɯɐu ǝɥʇ ʇǝsǝɹ oʇ ʇuɐʍ noʎ ɹǝʇɔǝs noʎ ǝɹɐ ʎH',
+                    confirmImport: '˙sƃuᴉʇʇǝS ʇuǝɹɹnɔ llɐ ʇǝʇᴉɥsɹǝʌo llᴉʍ sᴉɥ┴ ˙sƃuᴉʇʇǝS ʇɹodɯᴉ oʇ ʇuɐʍ noʎ ɹǝʇɔǝs noʎ ǝɹɐ ʎH',
+                    confirmResetAll: '˙uǝpo ʇouuɐɔ puɐ sƃuᴉʇʇǝS ʇlnɟɐǝp oʇ ǝɹnɐʇsǝɹ llᴉʍ sᴉɥ┴ ˙sƃuᴉʇʇǝS llɐ ʇǝsǝɹ oʇ ʇuɐʍ noʎ ɹǝʇɔǝs noʎ ǝɹɐ ʎH',
+                    importSuccess: '˙!pǝssǝɔɔns ʇɹodɯᴉ sƃuᴉʇʇǝS',
+                    importFailed: '˙!ʇɔǝɹɹoɔ ʇou sᴉ ɔᴉʇɐɯɹoɟ ǝlᴉɟ \'pǝlᴉɐɟ ʇɹodɯᴉ sƃuᴉʇʇǝS',
+                    exportSuccess: '˙!pǝssǝɔɔns ʇɹoddxǝ sƃuᴉʇʇǝS',
+                    resetSuccess: '˙!pǝssǝɔɔns ʇǝsǝɹ sƃuᴉʇʇǝS'
                 }
             },
             'en-PT': {
@@ -1734,6 +1904,12 @@
                     behaviorTitle: 'Behavior Settings',
                     autoSaveTitle: 'Auto Save',
                     autoSaveDesc: 'Save list and settings automagically',
+                    backupTitle: 'Backup & Plunder',
+                    backupSettingsTitle: 'Settings Management',
+                    backupSettingsDesc: 'Export, import or reset all settings',
+                    exportSettingsText: 'Export Settings',
+                    importSettingsText: 'Import Settings',
+                    resetSettingsText: 'Reset Settings',
                     themeTitle: 'Theme Settings',
                     themeModeTitle: 'Theme Mode',
                     themeModeDesc: 'Choose light or dark theme',
@@ -1750,7 +1926,13 @@
                     cancelText: 'Cancel',
                     editText: 'Edit',
                     deleteText: 'Walk the Plank',
-                    confirmReset: 'Arrr! Ye sure ye want to reset the crew list? This\'ll send all scallywags to Davy Jones\' locker!'
+                    confirmReset: 'Arrr! Ye sure ye want to reset the crew list? This\'ll send all scallywags to Davy Jones\' locker!',
+                    confirmImport: 'Arrr! Ye sure ye want to import settings? This\'ll overwrite all current settings!',
+                    confirmResetAll: 'Arrr! Ye sure ye want to reset all settings? This\'ll restore default settings and cannot be undone!',
+                    importSuccess: 'Settings imported successfully, arrr!',
+                    importFailed: 'Settings import failed, file format be incorrect!',
+                    exportSuccess: 'Settings exported successfully!',
+                    resetSuccess: 'Settings reset successfully!'
                 }
             }
         };
@@ -1797,7 +1979,10 @@
             namesList: document.getElementById('namesList'),
             exportNamesBtn: document.getElementById('exportNamesBtn'),
             importNamesBtn: document.getElementById('importNamesBtn'),
-            resetNamesBtn: document.getElementById('resetNamesBtn')
+            resetNamesBtn: document.getElementById('resetNamesBtn'),
+            exportSettingsBtn: document.getElementById('exportSettingsBtn'),
+            importSettingsBtn: document.getElementById('importSettingsBtn'),
+            resetSettingsBtn: document.getElementById('resetSettingsBtn')
         };
 
         // 初始化应用
@@ -1886,6 +2071,11 @@
             elements.importNamesBtn.addEventListener('click', importNames);
             elements.resetNamesBtn.addEventListener('click', resetNames);
             
+            // 设置操作
+            elements.exportSettingsBtn.addEventListener('click', exportSettings);
+            elements.importSettingsBtn.addEventListener('click', importSettings);
+            elements.resetSettingsBtn.addEventListener('click', resetAllSettings);
+            
             // 导航
             document.querySelectorAll('.nav-item').forEach(item => {
                 item.addEventListener('click', (e) => {
@@ -1941,7 +2131,7 @@
         // 开始点名
         function startRollCall() {
             if (state.names.length === 0) {
-                alert('名单为空，请先添加姓名！');
+                alert('名单为空，请先添加姓名!');
                 return;
             }
             
@@ -2124,6 +2314,12 @@
             document.getElementById('behaviorTitle').textContent = strings.behaviorTitle;
             document.getElementById('autoSaveTitle').textContent = strings.autoSaveTitle;
             document.getElementById('autoSaveDesc').textContent = strings.autoSaveDesc;
+            document.getElementById('backupTitle').textContent = strings.backupTitle;
+            document.getElementById('backupSettingsTitle').textContent = strings.backupSettingsTitle;
+            document.getElementById('backupSettingsDesc').textContent = strings.backupSettingsDesc;
+            document.getElementById('exportSettingsText').textContent = strings.exportSettingsText;
+            document.getElementById('importSettingsText').textContent = strings.importSettingsText;
+            document.getElementById('resetSettingsText').textContent = strings.resetSettingsText;
             document.getElementById('themeTitle').textContent = strings.themeTitle;
             document.getElementById('themeModeTitle').textContent = strings.themeModeTitle;
             document.getElementById('themeModeDesc').textContent = strings.themeModeDesc;
@@ -2300,12 +2496,12 @@
                                 state.names = importedNames;
                                 renderNamesList();
                                 saveState();
-                                alert('名单导入成功！');
+                                alert('名单导入成功!');
                             } else {
-                                alert('文件格式不正确！');
+                                alert('文件格式不正确!');
                             }
                         } catch (error) {
-                            alert('文件读取失败！');
+                            alert('文件读取失败!');
                         }
                     };
                     reader.readAsText(file);
@@ -2322,6 +2518,162 @@
                 renderNamesList();
                 saveState();
             }
+        }
+
+        // 导出设置
+        function exportSettings() {
+            const exportData = {
+                version: '2.3.2',
+                exportTime: new Date().toISOString(),
+                state: state
+            };
+            
+            const dataStr = JSON.stringify(exportData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = `quantum_roll_call_settings_${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            
+            // 显示成功消息
+            showMessage(getString('exportSuccess'));
+        }
+
+        // 导入设置
+        function importSettings() {
+            if (!confirm(getString('confirmImport'))) {
+                return;
+            }
+            
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            
+            input.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        try {
+                            const importedData = JSON.parse(event.target.result);
+                            
+                            // 验证文件格式
+                            if (importedData && importedData.state) {
+                                // 保留当前的点名状态
+                                const wasRolling = state.isRolling;
+                                const currentRollInterval = state.rollInterval;
+                                
+                                // 更新状态
+                                state = { ...state, ...importedData.state };
+                                
+                                // 如果之前正在点名，停止它
+                                if (wasRolling && state.rollInterval) {
+                                    clearInterval(state.rollInterval);
+                                    state.isRolling = false;
+                                    state.rollInterval = null;
+                                }
+                                
+                                // 应用新设置
+                                document.body.setAttribute('data-theme', state.theme);
+                                document.body.className = `${state.theme === 'light' ? 'light' : ''} material-${state.material}`;
+                                document.body.setAttribute('dir', languages[state.language].dir);
+                                
+                                // 更新UI
+                                updateUI();
+                                renderNamesList();
+                                updateButtonState();
+                                updateSettingsUI();
+                                
+                                // 保存到本地存储
+                                saveState();
+                                
+                                showMessage(getString('importSuccess'));
+                            } else {
+                                showMessage(getString('importFailed'));
+                            }
+                        } catch (error) {
+                            console.error('导入设置失败:', error);
+                            showMessage(getString('importFailed'));
+                        }
+                    };
+                    reader.readAsText(file);
+                }
+            });
+            
+            input.click();
+        }
+
+        // 重置所有设置
+        function resetAllSettings() {
+            if (!confirm(getString('confirmResetAll'))) {
+                return;
+            }
+            
+            // 停止点名
+            if (state.isRolling) {
+                stopRollCall();
+            }
+            
+            // 重置为默认状态
+            state = {
+                isRolling: false,
+                names: ['张三', '李四', '王五', '赵六', '钱七'],
+                currentName: '',
+                rollInterval: null,
+                rollSpeed: 100,
+                language: 'zh-CN',
+                theme: 'dark',
+                material: 'acrylic',
+                autoSave: true
+            };
+            
+            // 清除本地存储
+            localStorage.removeItem('quantumRollCallState');
+            
+            // 应用默认设置
+            document.body.setAttribute('data-theme', state.theme);
+            document.body.className = `material-${state.material}`;
+            document.body.setAttribute('dir', 'ltr');
+            
+            // 更新UI
+            updateUI();
+            renderNamesList();
+            updateButtonState();
+            updateSettingsUI();
+            
+            showMessage(getString('resetSuccess'));
+        }
+
+        // 显示消息提示
+        function showMessage(message) {
+            // 创建一个临时提示元素
+            const messageEl = document.createElement('div');
+            messageEl.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--primary);
+                color: white;
+                padding: 12px 20px;
+                border-radius: var(--radius-lg);
+                box-shadow: 0 5px 15px var(--shadow);
+                z-index: 1000;
+                animation: slideIn 0.3s ease;
+            `;
+            messageEl.textContent = message;
+            
+            document.body.appendChild(messageEl);
+            
+            // 3秒后自动移除
+            setTimeout(() => {
+                messageEl.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    if (messageEl.parentNode) {
+                        messageEl.parentNode.removeChild(messageEl);
+                    }
+                }, 300);
+            }, 3000);
         }
 
         // 初始化应用
